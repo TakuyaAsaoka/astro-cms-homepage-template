@@ -52,7 +52,18 @@ export default defineConfig({
 
 5. `public/admin/config.yml` の `repo` を設定（CMS を使う場合）
 
-6. 開発サーバーを起動
+6. `.github/workflows/deploy.yml` の自動デプロイを有効化
+
+```yaml
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+```
+
+> テンプレートではpushトリガーがコメントアウトされています。上記のようにコメントを解除してください。
+
+7. 開発サーバーを起動
 
 ```bash
 npm run dev
@@ -107,6 +118,8 @@ npm run dev
 ## デプロイ
 
 `main` ブランチにpushすると、GitHub Actions により自動的に GitHub Pages へデプロイされます。
+
+> **注意**: テンプレートでは自動デプロイが無効化されています。「使い方」の手順6に従い、ワークフローのpushトリガーを有効化してください。
 
 初回は GitHub リポジトリの Settings → Pages → Source を「GitHub Actions」に設定してください。
 
