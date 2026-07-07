@@ -114,7 +114,7 @@ CSS変数の適用先:
 ### 6. `src/components/Header.astro` / `src/components/Footer.astro`
 
 - ヘッダー: ナビゲーションのアクティブ・ホバー時の下線色を `var(--season-accent)` に変更
-- フッター: SNSリンクの色を `var(--season-accent)` に変更
+- フッター: SNSリンクの色を `var(--season-accent-text)` に変更（テキストのためAA達成の導出色を使う）
 - いずれもスコープドスタイル内の色指定の変更のみで、構造は変えない
 
 ## 検証
