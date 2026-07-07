@@ -35,6 +35,9 @@ img {
   --season-accent: #e48ca0; /* デフォルト: 春 */
   /* タグ背景用の淡色はアクセント色から機械的に導出する */
   --season-accent-soft: color-mix(in srgb, var(--season-accent) 15%, white);
+  /* テキスト用の濃色。アクセント色そのままでは白背景に対しWCAG AAのコントラスト比
+     (4.5:1)を満たさないため、文字色には濃色に寄せた導出色を使う */
+  --season-accent-text: color-mix(in srgb, var(--season-accent) 65%, #333d47);
 }
 html[data-season="summer"] {
   --season-accent: #3a9daa;
@@ -53,7 +56,7 @@ html {
 
 /* 本文中のリンクを季節アクセント色にする */
 main a {
-  color: var(--season-accent);
+  color: var(--season-accent-text);
 }
 
 /* ===== Homeページ: ヒーロー ===== */
