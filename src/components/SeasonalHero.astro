@@ -1,21 +1,15 @@
 ---
 // SeasonalHero.astro — 四季のヒーロー背景アニメーション(依存なし・素のJS)
 // 使い方: <SeasonalHero season="summer" density={1} speed={1} height="600px" />
+// season="auto" は訪問時の月で季節を自動判定します(html[data-season] があればそれを優先)。
 // 子要素はそのまま前面にスロット表示されます(見出しなど)。
 interface Props {
-  season?: "spring" | "summer" | "autumn" | "winter";
+  season?: "spring" | "summer" | "autumn" | "winter" | "auto";
   density?: number; // 0.3〜2 目安
   speed?: number;   // 0.5〜2 目安
   height?: string;
 }
 const { season = "spring", density = 1, speed = 1, height = "600px" } = Astro.props;
-
-const BG: Record<string, string> = {
-  spring: "linear-gradient(160deg, #fdf7f8 0%, #fbecf0 55%, #f8e3ea 100%)",
-  summer: "linear-gradient(160deg, #f4fafb 0%, #e7f3f5 55%, #dcedf0 100%)",
-  autumn: "linear-gradient(160deg, #fcf6ec 0%, #f8ecd9 55%, #f4e2c8 100%)",
-  winter: "linear-gradient(160deg, #f7f9fb 0%, #edf2f7 55%, #e4ebf2 100%)",
-};
 ---
 
 <div
@@ -23,7 +17,7 @@ const BG: Record<string, string> = {
   data-season={season}
   data-density={density}
   data-speed={speed}
-  style={`position: relative; overflow: hidden; height: ${height}; background: ${BG[season]};`}
+  style={`position: relative; overflow: hidden; height: ${height};`}
 >
   <div data-sh-layer style="position: absolute; inset: 0; pointer-events: none;"></div>
   <div style="position: relative; z-index: 1; height: 100%;">
@@ -52,6 +46,14 @@ const BG: Record<string, string> = {
   const ACCENT: Record<string, string> = {
     spring: "#e48ca0", summer: "#3a9daa", autumn: "#cf6a2e", winter: "#87a3bc",
   };
+
+  const SEASONS = ["spring", "summer", "autumn", "winter"];
+  // 月→季節: 12〜2月=winter / 3〜5月=spring / 6〜8月=summer / 9〜11月=autumn
+  // (BaseLayoutのインラインスクリプトと同一マッピングであること)
+  function currentSeason(): string {
+    const m = new Date().getMonth() + 1;
+    return m <= 2 || m === 12 ? "winter" : m <= 5 ? "spring" : m <= 8 ? "summer" : "autumn";
+  }
 
   function setupFalling(layer: HTMLElement, season: string, density: number, speed: number) {
     const winter = season === "winter";
@@ -136,7 +138,13 @@ const BG: Record<string, string> = {
 
   for (const root of document.querySelectorAll<HTMLElement>("[data-seasonal-hero]")) {
     const layer = root.querySelector<HTMLElement>("[data-sh-layer]")!;
-    const season = root.dataset.season || "spring";
+    let season = root.dataset.season || "spring";
+    if (season === "auto") {
+      // レイアウト層(html[data-season])の判定を優先し、単体利用時は自前判定にフォールバック
+      const htmlSeason = document.documentElement.dataset.season;
+      season = htmlSeason && SEASONS.includes(htmlSeason) ? htmlSeason : currentSeason();
+      root.dataset.season = season; // 背景CSSと今後の参照を確定させる
+    }
     const density = parseFloat(root.dataset.density || "1");
     const speed = parseFloat(root.dataset.speed || "1");
 
@@ -164,3 +172,19 @@ const BG: Record<string, string> = {
     else requestAnimationFrame(frame);
   }
 </script>
+
+<style>
+  [data-seasonal-hero] {
+    /* フォールバック: 春(data-seasonが未確定の間もこの背景が表示される) */
+    background: linear-gradient(160deg, #fdf7f8 0%, #fbecf0 55%, #f8e3ea 100%);
+  }
+  [data-seasonal-hero][data-season="summer"] {
+    background: linear-gradient(160deg, #f4fafb 0%, #e7f3f5 55%, #dcedf0 100%);
+  }
+  [data-seasonal-hero][data-season="autumn"] {
+    background: linear-gradient(160deg, #fcf6ec 0%, #f8ecd9 55%, #f4e2c8 100%);
+  }
+  [data-seasonal-hero][data-season="winter"] {
+    background: linear-gradient(160deg, #f7f9fb 0%, #edf2f7 55%, #e4ebf2 100%);
+  }
+</style>
