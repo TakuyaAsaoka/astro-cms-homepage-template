@@ -481,17 +481,18 @@ Expected: `http://localhost:4321` で配信される（`astro.config.mjs` の `b
 2. スキルタグ8個（TypeScript / React / Node.js / AWS / Kubernetes / Terraform / Grafana / Prometheus）が表示される
 3. GitHubリンク（https://github.com/TakuyaAsaoka）とメールアドレスが表示され、メールリンクの `href` が `mailto:` で始まる
 4. `document.documentElement.dataset.season` が現在の月（7月=summer）に対応し、ヒーローの `data-season` と一致する
-5. ヒーローが画面幅いっぱいに表示され、横スクロールが発生しない
+5. ヒーローが画面幅いっぱいに表示され、横スクロールが発生しない（注: Header自身の `padding: 1rem` は残るため、ヘッダーとヒーローの間に約1remの余白が見えるのは想定どおり）
 6. スキルタグ・見出しマーカー・リンク・ヘッダーnav（hover/active）・フッターのアクセント色が季節色（7月なら青緑 #3a9daa）になっている
 
 - [ ] **Step 3: 他ページ・他季節の確認**
 
 1. Blog・Projectsページでもアクセント色が季節に連動している
-2. `evaluate_script` で `document.documentElement.dataset.season = "winter"` 等に書き換え、アクセント色とヒーロー背景（CSSのみ）が追従することを確認する（パーティクルは初期化時の季節のままで良い）
+2. アクセント色の追従確認: `evaluate_script` で `document.documentElement.dataset.season = "winter"` 等に書き換え、スキルタグ・リンク等のアクセント色が追従することを確認する（ヒーロー背景は `html[data-season]` にはバインドされていないため変わらない。これは仕様どおり）
+3. ヒーロー背景の追従確認: `evaluate_script` で `document.querySelector("[data-seasonal-hero]").dataset.season = "winter"` 等に書き換え、ヒーロー背景グラデーションが追従することを確認する（パーティクルは初期化時の季節のままで良い）
 
 - [ ] **Step 4: prefers-reduced-motion の確認**
 
-CSSエミュレーション（`emulate` ツール）で `prefers-reduced-motion: reduce` を設定してリロードし、ヒーローが静止画（パーティクル固定表示）になることを確認する。
+CSSエミュレーション（`emulate` ツール）で `prefers-reduced-motion: reduce` を設定してリロードし、ヒーローが静止画（パーティクル固定表示）になることを確認する。`emulate` ツールが対応していない場合は、`evaluate_script` での `matchMedia` 確認や DevTools レンダリングパネルでの手動確認に切り替えて良い。
 
 - [ ] **Step 5: スクリーンショットの保存**
 
