@@ -50,8 +50,10 @@ html[data-season="winter"] {
   --season-accent: #87a3bc;
 }
 
-/* full-bleed（100vw）はスクロールバー幅を含むため横スクロールを防ぐ */
-html {
+/* full-bleed（100vw）はスクロールバー幅を含むため横スクロールを防ぐ。
+   htmlのみではChromeでスクロール可能な溢れが残るためbodyにも設定する */
+html,
+body {
   overflow-x: clip;
 }
 
