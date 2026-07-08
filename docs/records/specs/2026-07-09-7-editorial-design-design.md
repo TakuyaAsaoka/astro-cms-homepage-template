@@ -62,7 +62,7 @@
 - 構成（上から）:
   1. 肩書き: `SOFTWARE ENGINEER / SRE` — 明朝・小さめ・字間 0.35em・季節アクセント色
   2. 名前: `アサオカ タクヤ` — 明朝・`clamp(2.2rem, 6vw, 3.4rem)`・字間 0.12em
-  3. 罫線: 幅 52px・高さ 1px・墨色
+  3. 罫線: 幅 52px・高さ 1px・墨色（装飾のため `<span class="hero-rule" aria-hidden="true">` として実装）
   4. キャッチコピー: `つくることと、動かし続けること。` — 明朝・字間 0.22em
 - 背景アニメーション（日輪・パーティクル）は無変更。日輪は右側にあるため、左下寄せの文字と構図が噛み合う
 - モバイル幅では左右パディングを詰め、`clamp` でフォントサイズが自然に縮む。字間が広いため `hero-copy` は改行を許容する
@@ -84,7 +84,7 @@
 - 英字ラベル: サンセリフ小・字間 0.3em・`--color-muted`。装飾のため `aria-hidden`
 - Skillsは「壱 技術 SKILLS」、Contactは「弐 連絡先 CONTACT」
 
-Skills（丸チップ廃止）:
+Skills（丸チップ廃止。クラス名を `skill-tags` → `skill-list`、`contact-links` → `contact-list` にリネームし、旧チップCSSは削除する）:
 
 - `<ul class="skill-list" role="list">` を維持しつつ、CSSで `li` をインライン化し、区切りの「・」（季節アクセント色）を `li + li::before` で挿入する（リストのセマンティクスを保ったまま文字組みにする）
 - 行間はゆったり（`line-height: 2.4` 目安）
@@ -123,8 +123,9 @@ Contact:
 | `src/components/Footer.astro` | 上罫線・SNSリンクの文字組み・コピーライト変更 |
 | `src/consts.ts` | `SITE_AUTHOR` 定数を追加 |
 
-変更しないもの: `SeasonalHero.astro`（アニメーション・auto判定）、`BaseLayout.astro`（季節判定）、季節アクセントCSS変数の切替の仕組み。
-なお `--season-accent-text` はリンク様式の変更（墨色文字＋季節色下線）により参照箇所がなくなるため、変数定義ごと削除する。
+変更しないもの: `SeasonalHero.astro`（アニメーション・auto判定）、`BaseLayout.astro`（季節判定）、季節アクセントCSS変数（`--season-accent`）の切替の仕組み。
+
+孤立する変数の削除: リンク様式の変更（墨色文字＋季節色下線）で `--season-accent-text` が、丸チップ廃止で `--season-accent-soft` が、それぞれ参照ゼロになる。両変数とも定義ごと削除し、dead code を残さない。残すのは `--season-accent`（漢数字・下線・区切り点・見出しマーカー等で継続使用）のみ。
 
 ## 検証
 
