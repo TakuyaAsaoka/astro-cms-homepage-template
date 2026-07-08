@@ -58,7 +58,12 @@ const currentPath = Astro.url.pathname;
     text-decoration: none;
     color: inherit;
   }
+  .nav-link:hover,
+  .nav-link:focus-visible,
   .nav-link.active {
     text-decoration: underline;
+    text-decoration-color: var(--season-accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
   }
 </style>

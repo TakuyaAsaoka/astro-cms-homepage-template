@@ -17,6 +17,22 @@ const { title, description, image } = Astro.props;
 <html lang="ja">
   <head>
     <BaseHead title={title} description={description} image={image} />
+    <script is:inline>
+      // 訪問時の月から季節を判定し、サイト全体の季節連動の起点となる data-season を設定する
+      // マッピング: 12〜2月=winter / 3〜5月=spring / 6〜8月=summer / 9〜11月=autumn
+      // ブロックで囲み、グローバルスコープへの束縛（他のインラインスクリプトとの衝突）を防ぐ
+      {
+        const month = new Date().getMonth() + 1;
+        document.documentElement.dataset.season =
+          month <= 2 || month === 12
+            ? "winter"
+            : month <= 5
+              ? "spring"
+              : month <= 8
+                ? "summer"
+                : "autumn";
+      }
+    </script>
   </head>
   <body>
     <Header />

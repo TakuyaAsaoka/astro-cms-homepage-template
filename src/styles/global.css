@@ -29,3 +29,100 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+/* ===== 季節アクセントカラー（html[data-season] に連動） ===== */
+:root {
+  --season-accent: #e48ca0; /* デフォルト: 春 */
+  /* タグ背景用の淡色はアクセント色から機械的に導出する */
+  --season-accent-soft: color-mix(in srgb, var(--season-accent) 15%, white);
+  /* テキスト用の濃色。アクセント色そのままでは白背景に対しWCAG AAのコントラスト比
+     (4.5:1)を満たさないため、文字色には濃色に寄せた導出色を使う。
+     混合比50%で全季節がAAを満たす(最悪値: 春 5.00:1) */
+  --season-accent-text: color-mix(in srgb, var(--season-accent) 50%, #333d47);
+}
+html[data-season="summer"] {
+  --season-accent: #3a9daa;
+}
+html[data-season="autumn"] {
+  --season-accent: #cf6a2e;
+}
+html[data-season="winter"] {
+  --season-accent: #87a3bc;
+}
+
+/* full-bleed（100vw）はスクロールバー幅を含むため横スクロールを防ぐ。
+   htmlのみではChromeでスクロール可能な溢れが残るためbodyにも設定する */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* 本文中のリンクを季節アクセント色にする */
+main a {
+  color: var(--season-accent-text);
+}
+
+/* ===== Homeページ: ヒーロー ===== */
+/* main（max-width: 800px, padding: 1rem）を突き抜けて全幅表示する */
+.home-hero {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  /* ヘッダー直下に密着させるため main の上パディングを打ち消す */
+  margin-top: -1rem;
+}
+.hero-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  color: #333d47;
+}
+.hero-name {
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1.2;
+}
+.hero-role {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  letter-spacing: 0.05em;
+}
+.hero-copy {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  opacity: 0.85;
+}
+
+/* ===== Homeページ: セクション共通 ===== */
+.home-section {
+  margin-block: 3rem;
+}
+.section-heading {
+  border-left: 4px solid var(--season-accent);
+  padding-left: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ===== Homeページ: スキルタグ ===== */
+.skill-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.skill-tag {
+  border: 1px solid var(--season-accent);
+  background: var(--season-accent-soft);
+  border-radius: 999px;
+  padding: 0.25rem 0.875rem;
+  font-size: 0.9rem;
+}
+
+/* ===== Homeページ: Contact ===== */
+.contact-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
