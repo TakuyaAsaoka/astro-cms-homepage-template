@@ -29,23 +29,23 @@ const skills = [
   </div>
 
   <section class="home-section">
-    <h2 class="section-heading">
+    <h2 class="section-heading" data-reveal>
       <span class="section-num">壱</span>
       <span class="section-title">技術</span>
       <span class="section-label" aria-hidden="true">SKILLS</span>
     </h2>
-    <ul class="skill-list" role="list">
+    <ul class="skill-list" role="list" data-reveal="delayed">
       {skills.map((skill) => <li>{skill}</li>)}
     </ul>
   </section>
 
   <section class="home-section">
-    <h2 class="section-heading">
+    <h2 class="section-heading" data-reveal>
       <span class="section-num">弐</span>
       <span class="section-title">連絡先</span>
       <span class="section-label" aria-hidden="true">CONTACT</span>
     </h2>
-    <ul class="contact-list" role="list">
+    <ul class="contact-list" role="list" data-reveal="delayed">
       <li>
         <span class="contact-label">GITHUB</span>
         <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">github.com/TakuyaAsaoka</a>

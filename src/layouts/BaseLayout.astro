@@ -32,6 +32,17 @@ const { title, description, image } = Astro.props;
                 ? "summer"
                 : "autumn";
       }
+      // JS有効フラグと reduced-motion フラグを初回ペイント前に同期付与する。
+      // これにより「JS無効なら data-reveal 要素が隠れない」「reduced-motion なら
+      // CSSレベルで最初から可視」を、ちらつき（FOUC）なく成立させる。
+      // ブロックで囲み、グローバルスコープへの束縛を防ぐ（data-season ブロックと同様）。
+      {
+        const de = document.documentElement;
+        de.classList.add("js");
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          de.classList.add("reduced-motion");
+        }
+      }
     </script>
   </head>
   <body>
@@ -40,5 +51,8 @@ const { title, description, image } = Astro.props;
       <slot />
     </main>
     <Footer />
+    <script>
+      import "../scripts/reveal.ts";
+    </script>
   </body>
 </html>
