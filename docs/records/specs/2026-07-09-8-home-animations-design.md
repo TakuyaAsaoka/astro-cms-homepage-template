@@ -37,15 +37,28 @@
 
 **演出方針**: 2段階（見出しブロック → 少し遅れて中身）（ブレインストーミングB案）。共通の再利用可能な仕組みで実装する（A案: `data-reveal` 方式）。
 
-### 共通スクリプト（新規）
+### 実装を2つに分離する（FOUC回避の要）
 
-`src/scripts/reveal.ts`（BaseLayout から読み込む共通スクリプト、または Astro コンポーネントの `<script>`）として以下を実装する。
+CSSの初期隠し状態（`opacity:0`）を成立させるには、その判定フラグ（`js` クラス）が**初回ペイントより前**に付いていなければならない。Astro のバンドル `<script>`（`type="module"` 相当で遅延実行）でフラグを付けると、「一瞬見えてから隠れ、その後 reveal で再表示される」逆FOUC（ちらつき）が起きる。そのため役割を2つに分ける。
+
+**(a) フラグ付与 — `BaseLayout.astro` の head 内 `<script is:inline>`（同期実行）**
+
+既存の `data-season` 判定スクリプト（`src/layouts/BaseLayout.astro` の head 内 `<script is:inline>`）と同じ方式で、初回ペイント前に `<html>` へ以下を同期付与する。
+
+- `js` クラス（JS有効フラグ）
+- `prefers-reduced-motion: reduce` にマッチする場合は `reduced-motion` クラス
+
+これにより「JS無効なら `js` が付かず隠れない」「reduced-motion なら CSS レベルで最初から可視」の両方を、ちらつきなく成立させる。
+
+**(b) 監視ロジック — `src/scripts/reveal.ts`（新規・バンドル module）**
+
+`BaseLayout.astro` の `<script>`（バンドル対象）から `import` して読み込む。単体で `<script src>` 参照はしない。
 
 責務（単一目的）: 「`[data-reveal]` を付けた要素を、ビューポート進入時に一度だけ可視化する」。
 
-- 早期に `<html>` へ JS有効フラグ（`class="js"`）を付与する（描画のちらつき＝FOUCを避けるため、可能な限り早いタイミング）
 - `[data-reveal]` 要素を IntersectionObserver で監視し、進入したら `.is-visible` を付与して `unobserve`（**一度出たら解除しない**）
-- `prefers-reduced-motion: reduce` の場合は監視を行わず、全 `[data-reveal]` に即 `.is-visible` を付与する
+- `reduced-motion` の場合は監視を張らず即リターン（可視化は下記CSSが担うため、JS側で何もしなくても全内容が見える）
+- 初期ビューポートに既に入っている要素（ヒーロー直下の最初のセクション等）は observer が即発火して即表示される。これは仕様として許容する。より確実にスクロール後に発火させたい場合は `rootMargin` を負値（例 `0px 0px -10% 0px`）にする方針を実装時に選べる
 
 インターフェース: HTML側は要素に `data-reveal` を付けるだけ。スクリプトの内部実装を変えても利用側は影響を受けない。
 
@@ -59,9 +72,10 @@
 
 ### CSS
 
-- 初期の隠し状態は `html.js [data-reveal]` にのみ適用する（`opacity: 0` + `translateY(16px)`）
+- 初期の隠し状態は `html.js:not(.reduced-motion) [data-reveal]` にのみ適用する（`opacity: 0` + `translateY(16px)`）
 - `.is-visible` で最終状態へ `transition`（`cubic-bezier(.22,1,.36,1)` / `0.7s`）
 - **JS無効時は `html.js` が付かないため初期隠し状態が適用されず、全内容が最初から見える**
+- **reduced-motion 時は `html.reduced-motion` により隠し状態のセレクタが外れ、CSSレベルで最初から可視**（JSの発火を待つタイミング窓が生じない）。念のため `@media (prefers-reduced-motion: reduce)` でも `[data-reveal]` を可視・`transition:none` にして二重に担保する
 
 ## 3. アクセシビリティ／堅牢性
 
@@ -69,7 +83,7 @@ Issue の受け入れ条件に対応する。
 
 | 条件 | 対応 |
 |------|------|
-| `prefers-reduced-motion: reduce` | ヒーローは `@media (prefers-reduced-motion: reduce)` で animation を無効化し最終状態を表示。スクロール登場はスクリプト側で監視せず即 `.is-visible` |
+| `prefers-reduced-motion: reduce` | ヒーローは `@media (prefers-reduced-motion: reduce)` で animation を無効化し最終状態を表示。スクロール登場は head inline が付ける `html.reduced-motion` により CSS レベルで最初から可視（JSの発火を待たない） |
 | JS無効 | ヒーローはCSSで再生（JS不要）。スクロール登場は `html.js` が付かず初期隠し状態が適用されないため全内容表示 |
 | モバイル幅 | 移動量は12〜16pxの微小移動のみ。横方向の移動やレイアウトシフトを伴わないため破綻しない |
 
@@ -89,8 +103,8 @@ Issue の受け入れ条件に対応する。
 | ファイル | 変更内容 |
 |----------|----------|
 | `src/styles/global.css` | ヒーロー入場のキーフレーム・stagger、スクロール登場の初期/可視状態、reduced-motion対応 |
-| `src/scripts/reveal.ts`（新規） | `data-reveal` を監視する共通スクリプト |
-| `src/layouts/BaseLayout.astro` | `js` クラス付与・reveal スクリプトの読み込み（配置は実装時に決定） |
+| `src/scripts/reveal.ts`（新規） | `data-reveal` を IntersectionObserver で監視する共通スクリプト。BaseLayout の `<script>` から `import` する |
+| `src/layouts/BaseLayout.astro` | head 内 `<script is:inline>` で `js`・`reduced-motion` クラスを同期付与。バンドル `<script>` から `reveal.ts` を import |
 | `src/pages/index.astro` | 各セクションへ `data-reveal` 付与 |
 
 ## スコープ外（Issue準拠）
