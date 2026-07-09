@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SeasonalHero from "../components/SeasonalHero.astro";
-import { SITE_DESCRIPTION, SOCIAL_LINKS, EMAIL } from "../consts";
+import { SITE_DESCRIPTION, SOCIAL_LINKS, EMAIL, SITE_AUTHOR } from "../consts";
 
 // スキルセクションに表示する技術タグ
 const skills = [
@@ -20,8 +20,9 @@ const skills = [
   <div class="home-hero">
     <SeasonalHero season="auto" height="70vh">
       <div class="hero-content">
-        <h1 class="hero-name">アサオカ タクヤ</h1>
-        <p class="hero-role">Software Engineer / SRE</p>
+        <p class="hero-role">SOFTWARE ENGINEER / SRE</p>
+        <h1 class="hero-name">{SITE_AUTHOR}</h1>
+        <span class="hero-rule" aria-hidden="true"></span>
         <p class="hero-copy">つくることと、動かし続けること。</p>
       </div>
     </SeasonalHero>
