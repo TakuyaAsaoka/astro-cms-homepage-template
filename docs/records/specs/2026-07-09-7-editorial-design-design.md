@@ -23,7 +23,7 @@
 |------|------|
 | 見出し書体 | Shippori Mincho（Google Fonts、weight 500/600） |
 | 本文書体 | Zen Kaku Gothic New（Google Fonts、weight 400/500/700） |
-| 文字色 | 墨色 `#2a333c`（本文の補助色は `#3d474f`、淡い注釈は `#9aa4ad`） |
+| 文字色 | 墨色 `#2a333c`（本文の補助色は `#3d474f`、淡い注釈は `#646d76`＝白背景でWCAG AA 4.66:1を満たす） |
 | ヒーロー構図 | 左下寄せの非対称配置（時候ラベルなし） |
 | セクション見出し | 漢数字＋和文＋英字ラベル（例: 壱 技術 SKILLS） |
 | スキル表記 | 「・」区切りの文字組み（丸チップ廃止） |
@@ -48,7 +48,7 @@
   --font-sans: "Zen Kaku Gothic New", system-ui, sans-serif;
   --color-ink: #2a333c;       /* 墨色: 見出し・本文 */
   --color-ink-soft: #3d474f;  /* 本文の補助 */
-  --color-muted: #9aa4ad;     /* 英字ラベル・注釈 */
+  --color-muted: #646d76;     /* 英字ラベル・注釈（白背景でWCAG AA 4.66:1） */
 }
 ```
 
