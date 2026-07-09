@@ -7,6 +7,7 @@
 }
 
 :root {
+  color-scheme: light dark; /* ネイティブUI（フォーム/スクロールバー）をテーマ追従 */
   --font-serif: "Shippori Mincho", "Hiragino Mincho ProN", serif;
   --font-sans: "Zen Kaku Gothic New", system-ui, -apple-system, sans-serif;
   --color-ink: #2a333c; /* 墨色: 見出し・本文 */
@@ -15,7 +16,6 @@
   --color-bg: #ffffff; /* ページ地 */
   --color-surface: #f0f0f0; /* カード・タグ・コード背景 */
   --color-border: #e0e0e0; /* 境界罫 */
-  color-scheme: light dark; /* ネイティブUI（フォーム/スクロールバー）をテーマ追従 */
   --hero-rule-width: 52px; /* ヒーロー罫線の最終幅 */
   --anim-ease: cubic-bezier(0.22, 1, 0.36, 1); /* 入場・登場共通のイージング */
   --anim-duration: 0.7s; /* フェードの基本デュレーション */
