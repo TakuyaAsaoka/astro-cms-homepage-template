@@ -13,5 +13,8 @@ export const SOCIAL_LINKS = {
 // 公開用メールアドレス
 export const EMAIL = "asaoka.biz@gmail.com";
 
+// 著者名（ヒーロー・フッターで参照）
+export const SITE_AUTHOR = "アサオカ タクヤ";
+
 // noteのRSS URL
 export const NOTE_RSS_URL = "";

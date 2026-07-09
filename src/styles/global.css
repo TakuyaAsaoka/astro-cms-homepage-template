@@ -6,9 +6,27 @@
   padding: 0;
 }
 
+:root {
+  --font-serif: "Shippori Mincho", "Hiragino Mincho ProN", serif;
+  --font-sans: "Zen Kaku Gothic New", system-ui, -apple-system, sans-serif;
+  --color-ink: #2a333c; /* 墨色: 見出し・本文 */
+  --color-ink-soft: #3d474f; /* 本文の補助 */
+  --color-muted: #646d76; /* 英字ラベル・注釈。白背景でWCAG AA(5.26:1)を満たす淡いグレー */
+}
+
 html {
-  font-family: system-ui, -apple-system, sans-serif;
-  line-height: 1.6;
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  color: var(--color-ink);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
 }
 
 body {
@@ -33,12 +51,6 @@ img {
 /* ===== 季節アクセントカラー（html[data-season] に連動） ===== */
 :root {
   --season-accent: #e48ca0; /* デフォルト: 春 */
-  /* タグ背景用の淡色はアクセント色から機械的に導出する */
-  --season-accent-soft: color-mix(in srgb, var(--season-accent) 15%, white);
-  /* テキスト用の濃色。アクセント色そのままでは白背景に対しWCAG AAのコントラスト比
-     (4.5:1)を満たさないため、文字色には濃色に寄せた導出色を使う。
-     混合比50%で全季節がAAを満たす(最悪値: 春 5.00:1) */
-  --season-accent-text: color-mix(in srgb, var(--season-accent) 50%, #333d47);
 }
 html[data-season="summer"] {
   --season-accent: #3a9daa;
@@ -57,9 +69,13 @@ body {
   overflow-x: clip;
 }
 
-/* 本文中のリンクを季節アクセント色にする */
+/* 本文リンク: 墨色文字 + 季節色の下線（コントラストは墨色で担保） */
 main a {
-  color: var(--season-accent-text);
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--season-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
 }
 
 /* ===== Homeページ: ヒーロー ===== */
@@ -74,55 +90,88 @@ main a {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  gap: 0.75rem;
-  padding: 1rem;
-  color: #333d47;
-}
-.hero-name {
-  font-size: clamp(2rem, 6vw, 3rem);
-  line-height: 1.2;
+  justify-content: flex-end;
+  align-items: flex-start;
+  text-align: left;
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  color: var(--color-ink);
 }
 .hero-role {
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  letter-spacing: 0.05em;
+  font-family: var(--font-serif);
+  font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+  letter-spacing: 0.35em;
+  color: var(--season-accent);
+  margin-bottom: 1rem;
+}
+.hero-name {
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  letter-spacing: 0.12em;
+  line-height: 1.25;
+}
+.hero-rule {
+  width: 52px;
+  height: 1px;
+  background: var(--color-ink);
+  margin: 1.25rem 0;
 }
 .hero-copy {
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
-  opacity: 0.85;
+  font-family: var(--font-serif);
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  letter-spacing: 0.22em;
 }
 
 /* ===== Homeページ: セクション共通 ===== */
 .home-section {
-  margin-block: 3rem;
+  margin-block: 4rem;
 }
 .section-heading {
-  border-left: 4px solid var(--season-accent);
-  padding-left: 0.75rem;
-  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.9em;
+  margin-bottom: 1.5rem;
+}
+.section-num {
+  font-size: 0.9em;
+  color: var(--season-accent);
+}
+.section-title {
+  letter-spacing: 0.25em;
+}
+.section-label {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  color: var(--color-muted);
 }
 
-/* ===== Homeページ: スキルタグ ===== */
-.skill-tags {
+/* ===== Homeページ: スキル（・区切りの文字組み） ===== */
+.skill-list {
   list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  color: var(--color-ink-soft);
+  line-height: 2.4;
+  letter-spacing: 0.06em;
 }
-.skill-tag {
-  border: 1px solid var(--season-accent);
-  background: var(--season-accent-soft);
-  border-radius: 999px;
-  padding: 0.25rem 0.875rem;
-  font-size: 0.9rem;
+.skill-list li {
+  display: inline;
+}
+.skill-list li + li::before {
+  content: "・";
+  color: var(--season-accent);
+  margin: 0 0.5em;
 }
 
 /* ===== Homeページ: Contact ===== */
-.contact-links {
+.contact-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
+}
+.contact-label {
+  display: inline-block;
+  width: 5em;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  color: var(--color-muted);
 }
