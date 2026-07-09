@@ -109,7 +109,7 @@ main a {
   line-height: 1.25;
 }
 .hero-rule {
-  width: 52px;
+  width: 0;
   height: 1px;
   background: var(--color-ink);
   margin: 1.25rem 0;
@@ -118,6 +118,56 @@ main a {
   font-family: var(--font-serif);
   font-size: clamp(0.95rem, 2vw, 1.15rem);
   letter-spacing: 0.22em;
+}
+
+/* ===== Homeページ: ヒーロー入場アニメーション ===== */
+/* 純CSSのため JS無効でも再生される。SeasonalHero の背景（rAF）とは独立して同時進行する。 */
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes hero-grow-rule {
+  from {
+    width: 0;
+  }
+  to {
+    width: 52px;
+  }
+}
+.hero-role {
+  opacity: 0;
+  animation: hero-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+.hero-name {
+  opacity: 0;
+  animation: hero-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
+}
+.hero-rule {
+  animation: hero-grow-rule 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards;
+}
+.hero-copy {
+  opacity: 0;
+  animation: hero-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.95s forwards;
+}
+
+/* reduced-motion: アニメーションを無効化し、最終状態で静止表示する */
+@media (prefers-reduced-motion: reduce) {
+  .hero-role,
+  .hero-name,
+  .hero-copy {
+    opacity: 1;
+    animation: none;
+  }
+  .hero-rule {
+    width: 52px;
+    animation: none;
+  }
 }
 
 /* ===== Homeページ: セクション共通 ===== */
