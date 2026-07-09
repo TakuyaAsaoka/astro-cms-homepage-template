@@ -1,5 +1,5 @@
 ---
-import { SOCIAL_LINKS } from "../consts";
+import { SOCIAL_LINKS, SITE_AUTHOR } from "../consts";
 
 const activeLinks = Object.entries(SOCIAL_LINKS).filter(([, url]) => url);
 ---
@@ -17,7 +17,7 @@ const activeLinks = Object.entries(SOCIAL_LINKS).filter(([, url]) => url);
         ))}
       </ul>
     )}
-    <p>&copy; {new Date().getFullYear()} All rights reserved.</p>
+    <p class="copyright">&copy; {new Date().getFullYear()} {SITE_AUTHOR}</p>
   </div>
 </footer>
 
@@ -25,6 +25,7 @@ const activeLinks = Object.entries(SOCIAL_LINKS).filter(([, url]) => url);
   .footer {
     padding: 2rem 1rem;
     text-align: center;
+    border-top: 1px solid #e7ecef;
   }
   .footer-inner {
     max-width: 800px;
@@ -38,6 +39,19 @@ const activeLinks = Object.entries(SOCIAL_LINKS).filter(([, url]) => url);
     margin-bottom: 1rem;
   }
   .social-links a {
-    color: var(--season-accent-text);
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+  .social-links a:hover {
+    color: var(--season-accent);
+  }
+  .copyright {
+    font-family: var(--font-serif);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
   }
 </style>
