@@ -19,15 +19,19 @@
 
 ### 新設トークン（ライト値）
 
-現状、body に背景指定が無く白背景に依存し、Footer に `#e7ecef` のハードコード罫線がある。これを解消するため背景・境界のトークンを新設する。ライト値は**現行の見た目を変えない**値にする。
+現状、body に背景指定が無く白背景に依存し、複数箇所に境界・面のハードコード色がある（Footer `#e7ecef`、ProjectCard `#e0e0e0`/`#f0f0f0`、blog `#e0e0e0`/`#666`、projects `#666`/`#f0f0f0`）。これを解消するため背景・境界・面のトークンを新設し、既存ハードコードを集約する。
 
-| トークン | ライト値 | 用途 |
+| トークン | ライト値 | 用途・集約対象 |
 |----------|---------|------|
 | `--color-bg` | `#ffffff` | ページ地。`body { background: var(--color-bg); }` を追加 |
-| `--color-surface` | `#ffffff`（または現行のカード地に一致する値） | カード・コード背景等（使用箇所があれば） |
-| `--color-border` | `#e7ecef` | Footer 等の境界罫（現行ハードコード値と一致） |
+| `--color-surface` | `#f0f0f0` | カード・タグ・コード背景。ProjectCard/projects の `#f0f0f0` を集約 |
+| `--color-border` | `#e0e0e0` | 境界罫。ProjectCard/blog の `#e0e0e0` と Footer の `#e7ecef` を集約（`#e7ecef`→`#e0e0e0` は視覚的にほぼ同一の淡グレーで、トークン統一による軽微な変更として許容） |
+
+`#666`（blog/projects の補助テキスト）は既存の `--color-muted`（`#646d76`）へ集約する（`#666`→`#646d76` は近似色で視覚差ほぼなし）。
 
 既存トークン（`--color-ink` `#2a333c` / `--color-ink-soft` `#3d474f` / `--color-muted` `#646d76` / `--season-accent`）はライト値を維持する。
+
+**ネイティブUI対応**: `:root { color-scheme: light dark; }` を追加し、フォームコントロール・スクロールバー等のブラウザ既定UIもダークに追従させる（トークン差し替えだけでは既定UIがライトのまま残るため）。
 
 ### ダーク上書き（`@media (prefers-color-scheme: dark)`）
 
@@ -42,14 +46,25 @@
 | `--color-muted` | `#9a9891` | 5.8:1 |
 | `--color-border` | `#3a3f48` | 1.6:1（罫は気配程度で意図的に低） |
 
-季節アクセント（`--season-accent`）は現状 `html[data-season="..."]` でライト値が定義されている。ダークでは同セレクタのダーク値を `@media` 内で上書きする。
+季節アクセント（`--season-accent`）は現状 `:root`（春デフォルト）＋ `html[data-season="summer|autumn|winter"]` の**4セレクタ**でライト値が定義されている。
 
 | 季節 | ライト | ダーク | 対地コントラスト |
 |------|--------|--------|----------------|
-| 春 | `#e48ca0` | `#e79aae` | 7.7:1 |
-| 夏 | `#3a9daa` | `#5cbdca` | 7.6:1 |
-| 秋 | `#cf6a2e` | `#e0904f` | 6.6:1 |
-| 冬 | `#87a3bc` | `#a3bdd4` | 8.6:1 |
+| 春（`:root`） | `#e48ca0` | `#e79aae` | 7.7:1 |
+| 夏（`html[data-season="summer"]`） | `#3a9daa` | `#5cbdca` | 7.6:1 |
+| 秋（`html[data-season="autumn"]`） | `#cf6a2e` | `#e0904f` | 6.6:1 |
+| 冬（`html[data-season="winter"]`） | `#87a3bc` | `#a3bdd4` | 8.6:1 |
+
+**重要（詳細度の地雷）**: ダーク上書きは必ず**ライト定義と同一のセレクタ**で行うこと。`@media` はカスケードの詳細度を上げないため、`@media dark { :root { --season-accent: <春ダーク> } }` だけでは `html[data-season="summer"]`（ライト値・詳細度 0,1,1）に負けて**夏でダーク値に切り替わらない**。したがって `@media (prefers-color-scheme: dark)` 内に `:root`（春）と `html[data-season="summer"]` / `[autumn]` / `[winter]` の**4セレクタすべて**を、ライト定義と同じ詳細度で書く。
+
+```css
+@media (prefers-color-scheme: dark) {
+  :root { --season-accent: #e79aae; /* 春 */ }
+  html[data-season="summer"] { --season-accent: #5cbdca; }
+  html[data-season="autumn"] { --season-accent: #e0904f; }
+  html[data-season="winter"] { --season-accent: #a3bdd4; }
+}
+```
 
 方針: 明度を1〜2段上げ、彩度は据え置きか微減。ネオン化（彩度上げ）は和の静けさを壊すため禁止。4色すべて本文 AA（4.5:1）超のため、小さな英字ラベルにもそのまま使える。
 
@@ -68,24 +83,26 @@
 
 パーティクル色・日輪（JS側の `PARTICLE_COLORS` / `ACCENT`）は**現状維持**とする。冬の白・春の桜色・秋の橙・夏の青緑の粒子は暗地でも十分に読め、JS を prefers-color-scheme に反応させる複雑化を避けるため、今回のダーク対応は**ヒーローのCSS背景グラデーションのみ変更**とする。日輪（`ACCENT[season]` を opacity 0.14 で敷く円）もそのまま暗地で成立する。
 
-## コンポーネント修正
+## コンポーネント修正（ハードコード色のトークン化）
+
+現状のハードコード色を、対応するトークンへ**確定で**置換する（監査で見つかった実在の色。マッピングは前掲）。`#666`→`--color-muted`、`#e0e0e0`/`#e7ecef`→`--color-border`、`#f0f0f0`→`--color-surface`。
 
 | ファイル | 変更 |
 |----------|------|
-| `src/components/Footer.astro` | `border-top: 1px solid #e7ecef` → `1px solid var(--color-border)` |
-| `src/components/Header.astro` | `color: inherit` とトークン使用で概ねダーク対応済み（背景透過）。監査し、ハードコード色があればトークン化 |
-| `src/styles/global.css` | 上記トークン新設・`body` 背景適用・`@media` ダーク上書き |
-| `src/components/SeasonalHero.astro` | `<style>` にダーク版グラデ追加 |
+| `src/components/Footer.astro` | `border-top: 1px solid #e7ecef` → `var(--color-border)` |
+| `src/components/ProjectCard.astro` | `border: 1px solid #e0e0e0` → `var(--color-border)`、`background: #f0f0f0` → `var(--color-surface)` |
+| `src/pages/blog.astro` | `#e0e0e0` → `var(--color-border)`、`#666` → `var(--color-muted)` |
+| `src/pages/projects/[...slug].astro` | `#666` → `var(--color-muted)`、`#f0f0f0` → `var(--color-surface)` |
+| `src/components/SeasonalHero.astro` | `<style>` に4季節のダーク版グラデ追加 |
+| `src/styles/global.css` | トークン新設・`body` 背景適用・`color-scheme: light dark`・`@media dark` 上書き・季節アクセント4セレクタ上書き |
 
-`main a`（本文リンク）は既に `var(--color-ink)` / `var(--season-accent)` を使用しており、ダークは自動対応。
-
-その他のページ/コンポーネント（`ProjectCard.astro`、`blog.astro`、`projects/`）にハードコード色が無いか監査し、あればトークン化する。
+`main a`（本文リンク）は既に `var(--color-ink)` / `var(--season-accent)` を使用しており、ダークは自動対応。`src/components/Header.astro` は監査済み — `color: inherit` とトークンのみでハードコード色が無いため**変更不要**。
 
 ## アクセシビリティ / 堅牢性
 
 | 項目 | 対応 |
 |------|------|
-| コントラスト | 全テキスト/背景・アクセント/地・ヒーロー各ストップ上の文字まで WCAG AA 以上（本文4.5:1、大見出し3:1）。実測確認済み |
+| コントラスト | 本文3階調・アクセント4色は対地 WCAG AA 以上を実測済み。ヒーローの暗色グラデ各ストップ上の文字（`--color-ink`＝生成り白）は AA 見込みが高いが、**実装後の目視・実測で最終確認する** |
 | ライト維持 | トークンのライト値は現行と完全一致に保ち、ライト時の見た目を変えない |
 | FOUC | `@media` のみで JS 不使用のため、初回ペイントから正しいテーマ。ちらつき無し |
 
@@ -102,10 +119,14 @@
 
 | ファイル | 変更内容 |
 |----------|----------|
-| `src/styles/global.css` | 背景・境界トークン新設、`body` 背景適用、`@media dark` で全トークン藍墨化、季節アクセントのダーク上書き |
+| `src/styles/global.css` | 背景・境界・面トークン新設、`body` 背景適用、`color-scheme: light dark`、`@media dark` で全トークン藍墨化、季節アクセント4セレクタ（`:root`＋`html[data-season]`×3）のダーク上書き |
 | `src/components/SeasonalHero.astro` | `<style>` に4季節のダーク版グラデ追加 |
-| `src/components/Footer.astro` | 境界罫のハードコード色をトークン化 |
-| `src/components/Header.astro` | 色のハードコード監査・必要ならトークン化 |
+| `src/components/Footer.astro` | 境界罫 `#e7ecef` → `var(--color-border)` |
+| `src/components/ProjectCard.astro` | `#e0e0e0` → `var(--color-border)`、`#f0f0f0` → `var(--color-surface)` |
+| `src/pages/blog.astro` | `#e0e0e0` → `var(--color-border)`、`#666` → `var(--color-muted)` |
+| `src/pages/projects/[...slug].astro` | `#666` → `var(--color-muted)`、`#f0f0f0` → `var(--color-surface)` |
+
+`src/components/Header.astro` は監査済み・変更不要（ハードコード色なし）。
 
 ## スコープ外
 
