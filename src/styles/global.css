@@ -122,33 +122,56 @@ main a {
 
 /* ===== Homeページ: セクション共通 ===== */
 .home-section {
-  margin-block: 3rem;
+  margin-block: 4rem;
 }
 .section-heading {
-  border-left: 4px solid var(--season-accent);
-  padding-left: 0.75rem;
-  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.9em;
+  margin-bottom: 1.5rem;
+}
+.section-num {
+  font-size: 0.9em;
+  color: var(--season-accent);
+}
+.section-title {
+  letter-spacing: 0.25em;
+}
+.section-label {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  color: var(--color-muted);
 }
 
-/* ===== Homeページ: スキルタグ ===== */
-.skill-tags {
+/* ===== Homeページ: スキル（・区切りの文字組み） ===== */
+.skill-list {
   list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  color: var(--color-ink-soft);
+  line-height: 2.4;
+  letter-spacing: 0.06em;
 }
-.skill-tag {
-  border: 1px solid var(--season-accent);
-  background: var(--season-accent-soft);
-  border-radius: 999px;
-  padding: 0.25rem 0.875rem;
-  font-size: 0.9rem;
+.skill-list li {
+  display: inline;
+}
+.skill-list li + li::before {
+  content: "・";
+  color: var(--season-accent);
+  margin: 0 0.5em;
 }
 
 /* ===== Homeページ: Contact ===== */
-.contact-links {
+.contact-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
+}
+.contact-label {
+  display: inline-block;
+  width: 5em;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  color: var(--color-muted);
 }
