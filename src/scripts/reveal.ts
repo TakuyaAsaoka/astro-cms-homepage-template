@@ -19,7 +19,7 @@ if (!reduced) {
     { rootMargin: "0px 0px -10% 0px" },
   );
 
-  for (const el of document.querySelectorAll("[data-reveal]")) {
+  for (const el of document.querySelectorAll<HTMLElement>("[data-reveal]")) {
     observer.observe(el);
   }
 }

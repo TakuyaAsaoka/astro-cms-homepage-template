@@ -12,6 +12,9 @@
   --color-ink: #2a333c; /* 墨色: 見出し・本文 */
   --color-ink-soft: #3d474f; /* 本文の補助 */
   --color-muted: #646d76; /* 英字ラベル・注釈。白背景でWCAG AA(5.26:1)を満たす淡いグレー */
+  --hero-rule-width: 52px; /* ヒーロー罫線の最終幅 */
+  --anim-ease: cubic-bezier(0.22, 1, 0.36, 1); /* 入場・登場共通のイージング */
+  --anim-duration: 0.7s; /* フェードの基本デュレーション */
 }
 
 html {
@@ -137,23 +140,23 @@ main a {
     width: 0;
   }
   to {
-    width: 52px;
+    width: var(--hero-rule-width);
   }
 }
 .hero-role {
   opacity: 0;
-  animation: hero-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+  animation: hero-fade-up var(--anim-duration) var(--anim-ease) 0.1s forwards;
 }
 .hero-name {
   opacity: 0;
-  animation: hero-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
+  animation: hero-fade-up var(--anim-duration) var(--anim-ease) 0.35s forwards;
 }
 .hero-rule {
-  animation: hero-grow-rule 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards;
+  animation: hero-grow-rule 0.6s var(--anim-ease) 0.7s forwards;
 }
 .hero-copy {
   opacity: 0;
-  animation: hero-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.95s forwards;
+  animation: hero-fade-up var(--anim-duration) var(--anim-ease) 0.95s forwards;
 }
 
 /* reduced-motion: アニメーションを無効化し、最終状態で静止表示する */
@@ -165,7 +168,7 @@ main a {
     animation: none;
   }
   .hero-rule {
-    width: 52px;
+    width: var(--hero-rule-width);
     animation: none;
   }
 }
@@ -233,8 +236,8 @@ html.js:not(.reduced-motion) [data-reveal] {
   opacity: 0;
   transform: translateY(16px);
   transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity var(--anim-duration) var(--anim-ease),
+    transform var(--anim-duration) var(--anim-ease);
 }
 html.js:not(.reduced-motion) [data-reveal].is-visible {
   opacity: 1;
@@ -245,7 +248,8 @@ html.js:not(.reduced-motion) [data-reveal="delayed"] {
   transition-delay: 0.23s;
 }
 
-/* reduced-motion: 二重の担保（html.reduced-motion で既に可視だが、念のためCSSでも） */
+/* reduced-motion: 二重の担保（html.reduced-motion で既に可視だが、念のためCSSでも）。
+   JSが .reduced-motion クラスの付与に失敗した場合でも隠れたままにならないための保険。 */
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] {
     opacity: 1;
