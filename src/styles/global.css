@@ -11,7 +11,7 @@
   --font-sans: "Zen Kaku Gothic New", system-ui, -apple-system, sans-serif;
   --color-ink: #2a333c; /* 墨色: 見出し・本文 */
   --color-ink-soft: #3d474f; /* 本文の補助 */
-  --color-muted: #646d76; /* 英字ラベル・注釈。白背景でWCAG AA(4.66:1)を満たす淡いグレー */
+  --color-muted: #646d76; /* 英字ラベル・注釈。白背景でWCAG AA(5.26:1)を満たす淡いグレー */
 }
 
 html {
