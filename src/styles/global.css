@@ -7,11 +7,15 @@
 }
 
 :root {
+  color-scheme: light dark; /* ネイティブUI（フォーム/スクロールバー）をテーマ追従 */
   --font-serif: "Shippori Mincho", "Hiragino Mincho ProN", serif;
   --font-sans: "Zen Kaku Gothic New", system-ui, -apple-system, sans-serif;
   --color-ink: #2a333c; /* 墨色: 見出し・本文 */
   --color-ink-soft: #3d474f; /* 本文の補助 */
   --color-muted: #646d76; /* 英字ラベル・注釈。白背景でWCAG AA(5.26:1)を満たす淡いグレー */
+  --color-bg: #ffffff; /* ページ地 */
+  --color-surface: #f0f0f0; /* カード・タグ・コード背景 */
+  --color-border: #e0e0e0; /* 境界罫 */
   --hero-rule-width: 52px; /* ヒーロー罫線の最終幅 */
   --anim-ease: cubic-bezier(0.22, 1, 0.36, 1); /* 入場・登場共通のイージング */
   --anim-duration: 0.7s; /* フェードの基本デュレーション */
@@ -36,6 +40,7 @@ body {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  background: var(--color-bg);
 }
 
 main {
@@ -63,6 +68,28 @@ html[data-season="autumn"] {
 }
 html[data-season="winter"] {
   --season-accent: #87a3bc;
+}
+
+/* ===== ダークモード（藍墨）: prefers-color-scheme 自動追従 ===== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #1b1e24;
+    --color-surface: #232730;
+    --color-ink: #e8e6e1; /* 生成りのオフホワイト（対地13.4:1） */
+    --color-ink-soft: #c3c1bb; /* 対地9.3:1 */
+    --color-muted: #9a9891; /* 対地5.8:1 */
+    --color-border: #3a3f48;
+    --season-accent: #e79aae; /* 春 */
+  }
+  html[data-season="summer"] {
+    --season-accent: #5cbdca;
+  }
+  html[data-season="autumn"] {
+    --season-accent: #e0904f;
+  }
+  html[data-season="winter"] {
+    --season-accent: #a3bdd4;
+  }
 }
 
 /* full-bleed（100vw）はスクロールバー幅を含むため横スクロールを防ぐ。

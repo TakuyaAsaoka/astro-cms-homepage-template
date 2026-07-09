@@ -187,4 +187,24 @@ const { season = "spring", density = 1, speed = 1, height = "600px" } = Astro.pr
   [data-seasonal-hero][data-season="winter"] {
     background: linear-gradient(160deg, #f7f9fb 0%, #edf2f7 55%, #e4ebf2 100%);
   }
+
+  /* ダークモード（藍墨）: 「墨に一滴の季節色」 */
+  @media (prefers-color-scheme: dark) {
+    [data-seasonal-hero] {
+      /* 春（夜桜） */
+      background: linear-gradient(160deg, #211d23 0%, #2c222b 100%);
+    }
+    [data-seasonal-hero][data-season="summer"] {
+      /* 夏（夜の水面） */
+      background: linear-gradient(160deg, #17222a 0%, #153039 100%);
+    }
+    [data-seasonal-hero][data-season="autumn"] {
+      /* 秋（熾火） */
+      background: linear-gradient(160deg, #241e19 0%, #2e2218 100%);
+    }
+    [data-seasonal-hero][data-season="winter"] {
+      /* 冬（雪明かりの藍） */
+      background: linear-gradient(160deg, #1b202a 0%, #212c3a 100%);
+    }
+  }
 </style>
