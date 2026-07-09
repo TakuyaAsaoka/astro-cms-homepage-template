@@ -6,9 +6,27 @@
   padding: 0;
 }
 
+:root {
+  --font-serif: "Shippori Mincho", "Hiragino Mincho ProN", serif;
+  --font-sans: "Zen Kaku Gothic New", system-ui, -apple-system, sans-serif;
+  --color-ink: #2a333c; /* 墨色: 見出し・本文 */
+  --color-ink-soft: #3d474f; /* 本文の補助 */
+  --color-muted: #9aa4ad; /* 英字ラベル・注釈 */
+}
+
 html {
-  font-family: system-ui, -apple-system, sans-serif;
-  line-height: 1.6;
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  color: var(--color-ink);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
 }
 
 body {
@@ -33,12 +51,6 @@ img {
 /* ===== 季節アクセントカラー（html[data-season] に連動） ===== */
 :root {
   --season-accent: #e48ca0; /* デフォルト: 春 */
-  /* タグ背景用の淡色はアクセント色から機械的に導出する */
-  --season-accent-soft: color-mix(in srgb, var(--season-accent) 15%, white);
-  /* テキスト用の濃色。アクセント色そのままでは白背景に対しWCAG AAのコントラスト比
-     (4.5:1)を満たさないため、文字色には濃色に寄せた導出色を使う。
-     混合比50%で全季節がAAを満たす(最悪値: 春 5.00:1) */
-  --season-accent-text: color-mix(in srgb, var(--season-accent) 50%, #333d47);
 }
 html[data-season="summer"] {
   --season-accent: #3a9daa;
@@ -57,9 +69,13 @@ body {
   overflow-x: clip;
 }
 
-/* 本文中のリンクを季節アクセント色にする */
+/* 本文リンク: 墨色文字 + 季節色の下線（コントラストは墨色で担保） */
 main a {
-  color: var(--season-accent-text);
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--season-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
 }
 
 /* ===== Homeページ: ヒーロー ===== */
