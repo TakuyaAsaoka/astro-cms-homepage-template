@@ -76,8 +76,9 @@
   - ダーク: `@media (prefers-color-scheme: dark)` 内の `html[data-season=...]`（86〜94行付近）
 - `--season-accent` を `--accent` にリネームする。
   - 既定値はライト（63行）・ダーク（84行）の現行値をそのまま維持する。
-  - 消費箇所（`.hero-role` 135行、108・217・242行付近）を `var(--accent)` に追従させる。
+  - 消費箇所は `grep -rn "season-accent" src/` の全ヒットを対象とする。**global.css 内（108・135・217・242行）に限らず、`src/components/Footer.astro`（`.social-links a:hover` の `color`）と `src/components/Header.astro`（`.nav-link` の `text-decoration-color`）も追従させる**。取りこぼすと未定義変数参照でスタイルが壊れる。
 - 61行のコメント「季節アクセントカラー（html[data-season] に連動）」を、固定アクセントを表す内容へ更新する。
+- 156行付近のコメント「純CSSのため…SeasonalHero の背景（rAF）とは独立して…」を、静的ヒーローに合わせて更新する（SeasonalHero への言及を除去）。
 
 ### 4. `src/layouts/BaseLayout.astro`
 
@@ -102,5 +103,7 @@
 | `src/components/SeasonalHero.astro` | 削除 |
 | `src/components/README.md` | 削除 |
 | `src/pages/index.astro` | ヒーロー差し替え・import削除 |
-| `src/styles/global.css` | 季節CSS削除・変数リネーム・`.home-hero` 背景付与 |
+| `src/styles/global.css` | 季節CSS削除・変数リネーム・`.home-hero` 背景付与・コメント更新 |
 | `src/layouts/BaseLayout.astro` | `data-season` 付与削除 |
+| `src/components/Footer.astro` | `--season-accent` → `--accent` 追従 |
+| `src/components/Header.astro` | `--season-accent` → `--accent` 追従 |
