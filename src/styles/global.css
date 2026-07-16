@@ -58,9 +58,9 @@ img {
   height: auto;
 }
 
-/* ===== 季節アクセントカラー（html[data-season] に連動） ===== */
+/* ===== アクセントカラー（リンク下線・見出し番号・強調の固定色） ===== */
 :root {
-  --season-accent: #e48ca0; /* デフォルト: 春 */
+  --accent: #e48ca0;
 }
 
 /* ===== ダークモード（藍墨）: prefers-color-scheme 自動追従 ===== */
@@ -72,7 +72,7 @@ img {
     --color-ink-soft: #c3c1bb; /* 対地9.3:1 */
     --color-muted: #9a9891; /* 対地5.8:1 */
     --color-border: #3a3f48;
-    --season-accent: #e79aae; /* 春 */
+    --accent: #e79aae;
   }
 }
 
@@ -83,11 +83,11 @@ body {
   overflow-x: clip;
 }
 
-/* 本文リンク: 墨色文字 + 季節色の下線（コントラストは墨色で担保） */
+/* 本文リンク: 墨色文字 + アクセント色の下線（コントラストは墨色で担保） */
 main a {
   color: var(--color-ink);
   text-decoration: underline;
-  text-decoration-color: var(--season-accent);
+  text-decoration-color: var(--accent);
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
 }
@@ -99,7 +99,7 @@ main a {
   margin-inline: calc(50% - 50vw);
   /* ヘッダー直下に密着させるため main の上パディングを打ち消す */
   margin-top: -1rem;
-  /* 高さと背景は旧SeasonalHeroから移設。トークン参照によりダークモードにも自動追従する */
+  /* 高さと背景をヒーロー自身に持たせる。トークン参照によりダークモードにも自動追従する */
   height: 70vh;
   background: linear-gradient(160deg, var(--color-bg), var(--color-surface));
 }
@@ -117,7 +117,7 @@ main a {
   font-family: var(--font-serif);
   font-size: clamp(0.7rem, 1.6vw, 0.85rem);
   letter-spacing: 0.35em;
-  color: var(--season-accent);
+  color: var(--accent);
   margin-bottom: 1rem;
 }
 .hero-name {
@@ -199,7 +199,7 @@ main a {
 }
 .section-num {
   font-size: 0.9em;
-  color: var(--season-accent);
+  color: var(--accent);
 }
 .section-title {
   letter-spacing: 0.25em;
@@ -224,7 +224,7 @@ main a {
 }
 .skill-list li + li::before {
   content: "・";
-  color: var(--season-accent);
+  color: var(--accent);
   margin: 0 0.5em;
 }
 
