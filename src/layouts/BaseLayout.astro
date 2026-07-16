@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
@@ -17,17 +18,27 @@ const { title, description, image } = Astro.props;
 <html lang="ja">
   <head>
     <BaseHead title={title} description={description} image={image} />
+    <ClientRouter />
     <script is:inline>
-      // JS有効フラグと reduced-motion フラグを初回ペイント前に同期付与する。
+      // JS有効フラグと reduced-motion フラグを付与する。
+      // <html> は ClientRouter の swap で置換されフラグが消えるため、初回ペイント前の
+      // 即時付与に加え、astro:after-swap（新ページのペイント前）で再適用する。
       // これにより「JS無効なら data-reveal 要素が隠れない」「reduced-motion なら
-      // CSSレベルで最初から可視」を、ちらつき（FOUC）なく成立させる。
+      // CSSレベルで最初から可視」を、遷移後も FOUC なく成立させる。
+      // この is:inline は全ページで同一内容であること（内容が変わると遷移時に
+      // 再実行され after-swap リスナーが多重登録される）。
       // ブロックで囲み、グローバルスコープへの束縛を防ぐ。
       {
-        const de = document.documentElement;
-        de.classList.add("js");
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-          de.classList.add("reduced-motion");
-        }
+        const applyFlags = () => {
+          const de = document.documentElement;
+          de.classList.add("js");
+          de.classList.toggle(
+            "reduced-motion",
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+          );
+        };
+        applyFlags();
+        document.addEventListener("astro:after-swap", applyFlags);
       }
     </script>
   </head>
