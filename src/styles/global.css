@@ -117,6 +117,9 @@ main a {
   margin-inline: calc(50% - 50vw);
   /* ヘッダー直下に密着させるため main の上パディングを打ち消す */
   margin-top: -1rem;
+  /* 高さと背景は旧SeasonalHeroから移設。トークン参照によりダークモードにも自動追従する */
+  height: 70vh;
+  background: linear-gradient(160deg, var(--color-bg), var(--color-surface));
 }
 .hero-content {
   height: 100%;
@@ -153,7 +156,7 @@ main a {
 }
 
 /* ===== Homeページ: ヒーロー入場アニメーション ===== */
-/* 純CSSのため JS無効でも再生される。SeasonalHero の背景（rAF）とは独立して同時進行する。 */
+/* 純CSSのため JS無効でも再生される。 */
 @keyframes hero-fade-up {
   from {
     opacity: 0;
