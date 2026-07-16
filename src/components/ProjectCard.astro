@@ -5,11 +5,10 @@ interface Props {
   title: string;
   description: string;
   tags: string[];
-  url?: string;
   slug: string;
 }
 
-const { title, description, tags, url, slug } = Astro.props;
+const { title, description, tags, slug } = Astro.props;
 ---
 
 <article class="project-card">
@@ -17,13 +16,15 @@ const { title, description, tags, url, slug } = Astro.props;
     <a href={`${BASE_PATH}projects/${slug}/`}>{title}</a>
   </h3>
   <p>{description}</p>
-  {tags.length > 0 && (
-    <ul class="tags">
-      {tags.map((tag) => (
-        <li class="tag">{tag}</li>
-      ))}
-    </ul>
-  )}
+  {
+    tags.length > 0 && (
+      <ul class="tags">
+        {tags.map((tag) => (
+          <li class="tag">{tag}</li>
+        ))}
+      </ul>
+    )
+  }
 </article>
 
 <style>

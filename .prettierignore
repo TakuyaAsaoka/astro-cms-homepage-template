@@ -1,0 +1,10 @@
+dist/
+.astro/
+node_modules/
+package-lock.json
+
+# 生成・配布アセットは対象外
+public/
+
+# prose / ドキュメント・コンテンツ Markdown は整形対象にしない
+*.md
