@@ -5,7 +5,7 @@
 
 let observer: IntersectionObserver | null = null;
 
-function initReveal() {
+export function initReveal() {
   // 冪等化: 前回の監視を破棄する（遷移での多重監視を防ぐ）。
   observer?.disconnect();
   observer = null;

@@ -23,25 +23,34 @@ if (NOTE_RSS_URL) {
 <BaseLayout title="Blog" description="Blog posts from note">
   <section>
     <h1>Blog</h1>
-    {NOTE_RSS_URL === "" && (
-      <p>Set <code>NOTE_RSS_URL</code> in <code>src/consts.ts</code> to display blog posts.</p>
-    )}
-    {feedItems.length > 0 ? (
-      <ul class="blog-list">
-        {feedItems.map((item) => (
-          <li>
-            <a href={item.link} target="_blank" rel="noopener noreferrer">
-              {item.title}
-            </a>
-            {item.pubDate && (
-              <time>{new Date(item.pubDate).toLocaleDateString("ja-JP")}</time>
-            )}
-          </li>
-        ))}
-      </ul>
-    ) : NOTE_RSS_URL !== "" && (
-      <p>No posts found.</p>
-    )}
+    {
+      NOTE_RSS_URL === "" && (
+        <p>
+          Set <code>NOTE_RSS_URL</code> in <code>src/consts.ts</code> to display
+          blog posts.
+        </p>
+      )
+    }
+    {
+      feedItems.length > 0 ? (
+        <ul class="blog-list">
+          {feedItems.map((item) => (
+            <li>
+              <a href={item.link} target="_blank" rel="noopener noreferrer">
+                {item.title}
+              </a>
+              {item.pubDate && (
+                <time>
+                  {new Date(item.pubDate).toLocaleDateString("ja-JP")}
+                </time>
+              )}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        NOTE_RSS_URL !== "" && <p>No posts found.</p>
+      )
+    }
   </section>
 </BaseLayout>
 

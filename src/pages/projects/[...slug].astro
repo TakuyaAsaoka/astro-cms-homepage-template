@@ -20,16 +20,24 @@ const { Content } = await render(project);
   <article>
     <h1>{project.data.title}</h1>
     <time>{project.data.pubDate.toLocaleDateString("ja-JP")}</time>
-    {project.data.tags.length > 0 && (
-      <ul class="tags">
-        {project.data.tags.map((tag: string) => (
-          <li class="tag">{tag}</li>
-        ))}
-      </ul>
-    )}
-    {project.data.url && (
-      <p><a href={project.data.url} target="_blank" rel="noopener noreferrer">View Project</a></p>
-    )}
+    {
+      project.data.tags.length > 0 && (
+        <ul class="tags">
+          {project.data.tags.map((tag: string) => (
+            <li class="tag">{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+    {
+      project.data.url && (
+        <p>
+          <a href={project.data.url} target="_blank" rel="noopener noreferrer">
+            View Project
+          </a>
+        </p>
+      )
+    }
     <div class="content">
       <Content />
     </div>

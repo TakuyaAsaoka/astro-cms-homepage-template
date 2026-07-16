@@ -6,17 +6,19 @@ const activeLinks = Object.entries(SOCIAL_LINKS).filter(([, url]) => url);
 
 <footer class="footer">
   <div class="footer-inner">
-    {activeLinks.length > 0 && (
-      <ul class="social-links">
-        {activeLinks.map(([name, url]) => (
-          <li>
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              {name}
-            </a>
-          </li>
-        ))}
-      </ul>
-    )}
+    {
+      activeLinks.length > 0 && (
+        <ul class="social-links">
+          {activeLinks.map(([name, url]) => (
+            <li>
+              <a href={url} target="_blank" rel="noopener noreferrer">
+                {name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
     <p class="copyright">&copy; {new Date().getFullYear()} {SITE_AUTHOR}</p>
   </div>
 </footer>

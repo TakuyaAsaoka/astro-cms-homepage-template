@@ -18,16 +18,21 @@ const currentPath = normalizePath(Astro.url.pathname);
   <nav class="nav">
     <a href={BASE_PATH} class="nav-title">{SITE_TITLE}</a>
     <ul class="nav-links">
-      {navItems.map((item) => (
-        <li>
-          <a
-            href={item.href}
-            class:list={["nav-link", { active: currentPath === normalizePath(item.href) }]}
-          >
-            {item.label}
-          </a>
-        </li>
-      ))}
+      {
+        navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                "nav-link",
+                { active: currentPath === normalizePath(item.href) },
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </nav>
 </header>
