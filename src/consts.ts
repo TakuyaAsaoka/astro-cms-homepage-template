@@ -4,7 +4,7 @@ export function ensureTrailingSlash(path: string): string {
 }
 
 // デプロイ先の基準パス。Astro の BASE_URL は本番ビルドで末尾スラッシュを持たない
-// （例: "/homepage"）ため、末尾スラッシュを保証した定数に集約する。
+// （例: "/your-repo"）ため、末尾スラッシュを保証した定数に集約する。
 // import.meta.env.BASE_URL を直接文字列連結してはならない（本番でリンクが壊れる）
 export const BASE_PATH = ensureTrailingSlash(import.meta.env.BASE_URL);
 
