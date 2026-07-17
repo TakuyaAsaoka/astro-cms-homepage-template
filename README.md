@@ -28,8 +28,8 @@ GitHub Pages へのデプロイに対応しています。
 2. リポジトリをクローン
 
 ```bash
-git clone git@github.com:<ユーザー名>/<リポジトリ名>.git
-cd <リポジトリ名>
+git clone git@github.com:your-username/your-repo.git
+cd your-repo
 npm install
 ```
 
@@ -38,17 +38,34 @@ npm install
 ```typescript
 export const SITE_TITLE = "あなたのサイト名";
 export const SITE_DESCRIPTION = "サイトの説明";
-export const SITE_URL = "https://example.com";
+
+export const SOCIAL_LINKS = {
+  github: "https://github.com/your-username",
+  twitter: "",
+  youtube: "",
+};
+export const EMAIL = "you@example.com";
+export const SITE_AUTHOR = "Your Name";
 ```
 
-4. `astro.config.mjs` の `site` と `base` を自分の環境に合わせて変更
+4. `astro.config.mjs` の `site` と `base` をデプロイ形態に合わせて設定
 
 ```javascript
 export default defineConfig({
-  site: "https://<ユーザー名>.github.io",
-  base: "/<リポジトリ名>",
+  site: "https://your-username.github.io", // 独自ドメインなら "https://example.com"
+  base: "/your-repo", // 形態別の設定は下表を参照
 });
 ```
+
+デプロイ形態によって `base` の値が変わります。
+
+| デプロイ形態 | URL例 | `site` | `base` |
+|------------|-------|--------|--------|
+| プロジェクトサイト | `your-username.github.io/your-repo/` | `https://your-username.github.io` | `/your-repo` |
+| ユーザー/組織サイト | `your-username.github.io/` | `https://your-username.github.io` | `/` |
+| 独自ドメイン | `example.com/` | `https://example.com` | `/` |
+
+> `base` を変更したら `public/admin/config.yml` の `public_folder` も同じ値に揃えてください（CMSが挿入する画像パスは自動追従しません）。
 
 5. `public/admin/config.yml` の `repo` を設定（CMS を使う場合）
 
@@ -122,6 +139,8 @@ npm run dev
 > **注意**: テンプレートでは自動デプロイが無効化されています。「使い方」の手順6に従い、ワークフローのpushトリガーを有効化してください。
 
 初回は GitHub リポジトリの Settings → Pages → Source を「GitHub Actions」に設定してください。
+
+> **CSS・画像が読み込まれない場合**: `astro.config.mjs` の `base` がデプロイ形態と合っているか確認してください（プロジェクトサイトは `/your-repo`、ユーザーサイト・独自ドメインは `/`）。
 
 ### 独自ドメイン・SSL化
 
