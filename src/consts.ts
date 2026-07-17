@@ -26,8 +26,12 @@ export const SOCIAL_LINKS = {
 // 公開用メールアドレス
 export const EMAIL = "you@example.com";
 
-// 著者名（ヒーロー・フッターで参照）
+// 著者表示名（ヒーロー等の見せる場所で参照）
 export const SITE_AUTHOR = "Your Name";
+
+// 著作権表記名（Footer の © 表記で参照）。表示名と著作権者が異なる場合に
+// 個別に変更できるよう SITE_AUTHOR と分離している
+export const COPYRIGHT_HOLDER = "Your Name";
 
 // noteのRSS URL
 export const NOTE_RSS_URL = "";
