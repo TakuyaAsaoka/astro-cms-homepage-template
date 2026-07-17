@@ -3,25 +3,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE_DESCRIPTION, SOCIAL_LINKS, EMAIL, SITE_AUTHOR } from "../consts";
 
 // スキルセクションに表示する技術タグ
-const skills = [
-  "TypeScript",
-  "React",
-  "Node.js",
-  "AWS",
-  "Kubernetes",
-  "Terraform",
-  "Grafana",
-  "Prometheus",
-];
+const skills = ["Skill 1", "Skill 2", "Skill 3", "Skill 4"];
 ---
 
 <BaseLayout title="Home" description={SITE_DESCRIPTION}>
   <div class="home-hero">
     <div class="hero-content">
-      <p class="hero-role">SOFTWARE ENGINEER / SRE</p>
+      <p class="hero-role">YOUR ROLE</p>
       <h1 class="hero-name">{SITE_AUTHOR}</h1>
       <span class="hero-rule" aria-hidden="true"></span>
-      <p class="hero-copy">つくることと、動かし続けること。</p>
+      <p class="hero-copy">ここにキャッチコピーを入れます。</p>
     </div>
   </div>
 
@@ -46,7 +37,7 @@ const skills = [
       <li>
         <span class="contact-label">GITHUB</span>
         <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer"
-          >github.com/TakuyaAsaoka</a
+          >{SOCIAL_LINKS.github.replace(/^https?:\/\//, "")}</a
         >
       </li>
       <li>
