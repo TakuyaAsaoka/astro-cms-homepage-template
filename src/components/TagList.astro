@@ -1,0 +1,32 @@
+---
+interface Props {
+  tags: string[];
+}
+
+const { tags } = Astro.props;
+---
+
+{
+  tags.length > 0 && (
+    <ul class="tags">
+      {tags.map((tag) => (
+        <li class="tag">{tag}</li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  /* 余白（margin）はコンポーネント側で持たない。消費側が :global(.tags) で調整する */
+  .tags {
+    display: flex;
+    list-style: none;
+    gap: 0.5rem;
+  }
+  .tag {
+    font-size: 0.85rem;
+    padding: 0.1rem 0.5rem;
+    background: var(--color-surface);
+    border-radius: 2px;
+  }
+</style>

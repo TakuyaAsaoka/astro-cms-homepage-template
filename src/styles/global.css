@@ -10,6 +10,10 @@
   color-scheme: light dark; /* ネイティブUI（フォーム/スクロールバー）をテーマ追従 */
   --font-serif: "Shippori Mincho", "Hiragino Mincho ProN", serif;
   --font-sans: "Zen Kaku Gothic New", system-ui, -apple-system, sans-serif;
+  --content-max-width: 800px; /* 本文・ナビ・フッター共有の最大幅 */
+  /* コンテンツの左右パディング。Header / .main-inner / .hero-inner / Footer で共用し、
+     全ページの左端ラインを一直線に揃える */
+  --content-pad: clamp(1.25rem, 5vw, 2rem);
   --color-ink: #2a333c; /* 墨色: 見出し・本文 */
   --color-ink-soft: #3d474f; /* 本文の補助 */
   --color-muted: #646d76; /* 英字ラベル・注釈。白背景でWCAG AA(5.26:1)を満たす淡いグレー */
@@ -45,12 +49,16 @@ body {
   background: var(--color-bg);
 }
 
+/* main は全幅のままヒーロー（hero スロット）を受け、本文の幅制限は .main-inner が担う */
 main {
   flex: 1;
   width: 100%;
-  max-width: 800px;
+}
+
+.main-inner {
+  max-width: var(--content-max-width);
   margin: 0 auto;
-  padding: 1rem;
+  padding: 1rem var(--content-pad);
 }
 
 img {
@@ -76,15 +84,16 @@ img {
   }
 }
 
-/* full-bleed（100vw）はスクロールバー幅を含むため横スクロールを防ぐ。
+/* 全幅ヒーロー背景や clamp 幅計算などで生じうる横方向の溢れを防ぐ。
    htmlのみではChromeでスクロール可能な溢れが残るためbodyにも設定する */
 html,
 body {
   overflow-x: clip;
 }
 
-/* 本文リンク: 墨色文字 + アクセント色の下線（コントラストは墨色で担保） */
-main a {
+/* 本文リンク: 墨色文字 + アクセント色の下線（コントラストは墨色で担保）。
+   main は全幅コンテナ（hero を含む）のため、本文コンテナの .main-inner を基準にする */
+.main-inner a {
   color: var(--color-ink);
   text-decoration: underline;
   text-decoration-color: var(--accent);
@@ -93,15 +102,20 @@ main a {
 }
 
 /* ===== Homeページ: ヒーロー ===== */
-/* main（max-width: 800px, padding: 1rem）を突き抜けて全幅表示する */
+/* main は全幅コンテナのため、幅ハック（100vw）なしでヒーロー背景が全幅に広がる。
+   高さと背景をヒーロー自身に持たせる。トークン参照によりダークモードにも自動追従する */
 .home-hero {
-  width: 100vw;
-  margin-inline: calc(50% - 50vw);
-  /* ヘッダー直下に密着させるため main の上パディングを打ち消す */
-  margin-top: -1rem;
-  /* 高さと背景をヒーロー自身に持たせる。トークン参照によりダークモードにも自動追従する */
   height: 70vh;
   background: linear-gradient(160deg, var(--color-bg), var(--color-surface));
+}
+/* ヒーロー内テキストを本文（.main-inner）と同じ幅制限に載せ、左端ラインを全ページで揃える。
+   height: 100% は必須（.hero-content が justify-content: flex-end でヒーロー下端に
+   本文を固定しているため、高さを継承しないと下端揃えが崩れる） */
+.hero-inner {
+  height: 100%;
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+  padding-inline: var(--content-pad);
 }
 .hero-content {
   height: 100%;
@@ -110,7 +124,9 @@ main a {
   justify-content: flex-end;
   align-items: flex-start;
   text-align: left;
-  padding: clamp(1.5rem, 5vw, 3.5rem);
+  /* 左右 padding は .hero-inner の --content-pad が担う（二重にしない）。
+     下端の余白のみ .hero-content が持つ */
+  padding-block: 0 clamp(2rem, 6vh, 3.25rem);
   color: var(--color-ink);
 }
 .hero-role {
