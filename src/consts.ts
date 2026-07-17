@@ -8,6 +8,10 @@ export function ensureTrailingSlash(path: string): string {
 // import.meta.env.BASE_URL を直接文字列連結してはならない（本番でリンクが壊れる）
 export const BASE_PATH = ensureTrailingSlash(import.meta.env.BASE_URL);
 
+// OGP画像のフォールバック。ページで image を個別指定しない場合に og:image として
+// 出力される。BaseHead で絶対URL化される。
+export const DEFAULT_OG_IMAGE = `${BASE_PATH}images/og.png`;
+
 export const SITE_TITLE = "My Homepage";
 export const SITE_DESCRIPTION = "A personal homepage template built with Astro";
 export const SITE_LANG = "ja";

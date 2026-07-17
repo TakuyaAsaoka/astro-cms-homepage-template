@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { BASE_PATH } from "../consts";
+---
+
+<BaseLayout
+  title="ページが見つかりません"
+  description="お探しのページは存在しません。"
+  noindex
+>
+  <section class="not-found">
+    <h1 class="section-heading">
+      <span class="section-title">404</span>
+      <span class="section-label" aria-hidden="true">NOT FOUND</span>
+    </h1>
+    <p>お探しのページは見つかりませんでした。</p>
+    <p class="back">
+      <a href={BASE_PATH}
+        >ホームに戻る<span class="arrow" aria-hidden="true">→</span></a
+      >
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found p {
+    color: var(--color-muted);
+  }
+  .not-found .back {
+    margin-top: 2rem;
+  }
+  .not-found .arrow {
+    margin-left: 0.4em;
+  }
+</style>
