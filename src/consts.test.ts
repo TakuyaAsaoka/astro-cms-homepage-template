@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { ensureTrailingSlash, BASE_PATH, DEFAULT_OG_IMAGE, COPYRIGHT_HOLDER } from "./consts";
+import {
+  ensureTrailingSlash,
+  BASE_PATH,
+  DEFAULT_OG_IMAGE,
+  COPYRIGHT_HOLDER,
+} from "./consts";
 
 describe("ensureTrailingSlash", () => {
   it("末尾スラッシュが無い場合は付与する", () => {
