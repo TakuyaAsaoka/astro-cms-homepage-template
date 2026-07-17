@@ -7,12 +7,14 @@ const skills = ["Skill 1", "Skill 2", "Skill 3", "Skill 4"];
 ---
 
 <BaseLayout title="Home" description={SITE_DESCRIPTION}>
-  <div class="home-hero">
-    <div class="hero-content">
-      <p class="hero-role">YOUR ROLE</p>
-      <h1 class="hero-name">{SITE_AUTHOR}</h1>
-      <span class="hero-rule" aria-hidden="true"></span>
-      <p class="hero-copy">ここにキャッチコピーを入れます。</p>
+  <div class="home-hero" slot="hero">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <p class="hero-role">YOUR ROLE</p>
+        <h1 class="hero-name">{SITE_AUTHOR}</h1>
+        <span class="hero-rule" aria-hidden="true"></span>
+        <p class="hero-copy">ここにキャッチコピーを入れます。</p>
+      </div>
     </div>
   </div>
 
