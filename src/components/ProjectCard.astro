@@ -1,5 +1,6 @@
 ---
 import { BASE_PATH } from "../consts";
+import TagList from "./TagList.astro";
 
 interface Props {
   title: string;
@@ -16,15 +17,7 @@ const { title, description, tags, slug } = Astro.props;
     <a href={`${BASE_PATH}projects/${slug}/`}>{title}</a>
   </h3>
   <p>{description}</p>
-  {
-    tags.length > 0 && (
-      <ul class="tags">
-        {tags.map((tag) => (
-          <li class="tag">{tag}</li>
-        ))}
-      </ul>
-    )
-  }
+  <TagList tags={tags} />
 </article>
 
 <style>
@@ -38,16 +31,8 @@ const { title, description, tags, slug } = Astro.props;
     text-decoration: none;
     color: inherit;
   }
-  .tags {
-    display: flex;
-    list-style: none;
-    gap: 0.5rem;
+  /* TagList は余白を持たないため、カード内の余白は消費側で与える */
+  .project-card :global(.tags) {
     margin-top: 0.5rem;
-  }
-  .tag {
-    font-size: 0.85rem;
-    padding: 0.1rem 0.5rem;
-    background: var(--color-surface);
-    border-radius: 2px;
   }
 </style>

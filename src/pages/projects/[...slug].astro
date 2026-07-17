@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import TagList from "../../components/TagList.astro";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
@@ -20,15 +21,7 @@ const { Content } = await render(project);
   <article>
     <h1>{project.data.title}</h1>
     <time>{project.data.pubDate.toLocaleDateString("ja-JP")}</time>
-    {
-      project.data.tags.length > 0 && (
-        <ul class="tags">
-          {project.data.tags.map((tag: string) => (
-            <li class="tag">{tag}</li>
-          ))}
-        </ul>
-      )
-    }
+    <TagList tags={project.data.tags} />
     {
       project.data.url && (
         <p>
@@ -49,17 +42,9 @@ const { Content } = await render(project);
     color: var(--color-muted);
     font-size: 0.9rem;
   }
-  .tags {
-    display: flex;
-    list-style: none;
-    gap: 0.5rem;
+  /* TagList は余白を持たないため、記事内の余白は消費側で与える */
+  article :global(.tags) {
     margin: 0.5rem 0;
-  }
-  .tag {
-    font-size: 0.85rem;
-    padding: 0.1rem 0.5rem;
-    background: var(--color-surface);
-    border-radius: 2px;
   }
   .content {
     margin-top: 2rem;
