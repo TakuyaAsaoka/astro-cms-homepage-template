@@ -170,4 +170,13 @@ const currentPath = normalizePath(Astro.url.pathname);
       display: flex;
     }
   }
+
+  /* reduced-motion 時はアイコン変形アニメーションを無効化する（プロジェクト全体の方針に合わせる） */
+  @media (prefers-reduced-motion: reduce) {
+    .menu-icon,
+    .menu-icon::before,
+    .menu-icon::after {
+      transition: none;
+    }
+  }
 </style>
