@@ -60,7 +60,7 @@
 | `astro.config.mjs:4` | `site: "https://TakuyaAsaoka.github.io"` | `site: "https://example.com"`（形態別の例をコメント） |
 | `astro.config.mjs:7` | `base: "/homepage"` | `base: "/your-repo"`（形態別ガイド＋実害＋`public_folder` 同期をコメント） |
 | `public/admin/config.yml:10` | `public_folder: "/homepage/images"` | `public_folder: "/your-repo/images"`（`base` と同期。同期コメントは維持） |
-| `README.md` | `consts.ts` の SOCIAL_LINKS/EMAIL/AUTHOR 手順なし、`<ユーザー名>` 表記、形態別手順なし | 手順に SOCIAL_LINKS/EMAIL/SITE_AUTHOR を追加、表記を統一、デプロイ形態別の手順とトラブルシュートを追加 |
+| `README.md` | `consts.ts` の SOCIAL_LINKS/EMAIL/AUTHOR 手順なし、`<ユーザー名>` 表記、形態別手順なし、編集例に `SITE_URL` を含む（38-42行目） | 手順に SOCIAL_LINKS/EMAIL/SITE_AUTHOR を追加、表記を統一、デプロイ形態別の手順とトラブルシュートを追加、`consts.ts` 編集例から削除済みの `SITE_URL` 行を除去 |
 
 > 例示コンテンツ（肩書き・コピー・skills）の具体的な中立値は上記を提案とする。spec レビュー・ユーザーレビューで調整可能。
 
