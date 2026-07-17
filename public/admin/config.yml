@@ -7,7 +7,7 @@ media_folder: "public/images"
 # 公開URLのプレフィックス。CMSが本文に挿入する画像パス（例: /homepage/images/x.png）に使う。
 # base変更時は astro.config.mjs の base と必ず揃えること。
 # 本文は表示ページの階層が可変なため絶対URLが必須で、favicon のような相対パス化・自動追従ができない。
-public_folder: "/homepage/images"
+public_folder: "/your-repo/images"
 
 collections:
   - name: "projects"
