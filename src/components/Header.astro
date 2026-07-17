@@ -17,7 +17,15 @@ const currentPath = normalizePath(Astro.url.pathname);
 <header class="header">
   <nav class="nav">
     <a href={BASE_PATH} class="nav-title">{SITE_TITLE}</a>
-    <ul class="nav-links">
+    <button
+      class="menu-toggle"
+      aria-expanded="false"
+      aria-controls="nav-links"
+      aria-label="メニュー"
+    >
+      <span class="menu-icon" aria-hidden="true"></span>
+    </button>
+    <ul id="nav-links" class="nav-links">
       {
         navItems.map((item) => (
           <li>
@@ -37,13 +45,37 @@ const currentPath = normalizePath(Astro.url.pathname);
   </nav>
 </header>
 
+<script>
+  // JS有効時のみ .js-enabled を付与し、ハンバーガーの表示と開閉を有効化する。
+  // JS無効時は .js-enabled が付かず .nav-links が常時表示される
+  // （プログレッシブ・エンハンスメント）。
+  // 開閉状態は aria-expanded を single source of truth とし、表示制御はCSSが担う。
+  // ClientRouter 有効環境のため astro:page-load は遷移後も発火し、
+  // 遷移で置換された新しい Header にもリスナーとクラスが再適用される。
+  document.addEventListener("astro:page-load", () => {
+    const toggle = document.querySelector(".menu-toggle");
+    const header = document.querySelector(".header");
+
+    if (toggle && header) {
+      header.classList.add("js-enabled");
+
+      toggle.addEventListener("click", () => {
+        const expanded = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!expanded));
+      });
+    }
+  });
+</script>
+
 <style>
   .header {
-    padding: 1rem;
+    padding: 1rem 0;
   }
+  /* .main-inner / .hero-inner と同一構造（max-width＋内側padding）にして左端ラインを揃える */
   .nav {
-    max-width: 800px;
+    max-width: var(--content-max-width);
     margin: 0 auto;
+    padding-inline: var(--content-pad);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -56,6 +88,51 @@ const currentPath = normalizePath(Astro.url.pathname);
     letter-spacing: 0.2em;
     text-decoration: none;
     color: inherit;
+  }
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    /* ボタンのUA既定色に依存させず、menu-icon の currentColor を文字色に揃える */
+    color: inherit;
+  }
+  .menu-icon,
+  .menu-icon::before,
+  .menu-icon::after {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: currentColor;
+    transition: transform 0.3s;
+  }
+  .menu-icon {
+    position: relative;
+  }
+  .menu-icon::before,
+  .menu-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+  }
+  .menu-icon::before {
+    top: -7px;
+  }
+  .menu-icon::after {
+    top: 7px;
+  }
+  /* 開いている間は中央線を消し、上下線を交差させて × にする */
+  .menu-toggle[aria-expanded="true"] .menu-icon {
+    background: transparent;
+  }
+  .menu-toggle[aria-expanded="true"] .menu-icon::before {
+    top: 0;
+    transform: rotate(45deg);
+  }
+  .menu-toggle[aria-expanded="true"] .menu-icon::after {
+    top: 0;
+    transform: rotate(-45deg);
   }
   .nav-links {
     display: flex;
@@ -76,5 +153,21 @@ const currentPath = normalizePath(Astro.url.pathname);
     text-decoration-color: var(--accent);
     text-decoration-thickness: 2px;
     text-underline-offset: 6px;
+  }
+
+  @media (max-width: 767px) {
+    /* JS有効（.js-enabled）時のみハンバーガーを出し、ナビを折り畳む */
+    .js-enabled .menu-toggle {
+      display: block;
+    }
+    .js-enabled .nav-links {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .js-enabled .menu-toggle[aria-expanded="true"] ~ .nav-links {
+      display: flex;
+    }
   }
 </style>
