@@ -36,16 +36,28 @@ const skills = ["Skill 1", "Skill 2", "Skill 3", "Skill 4"];
       <span class="section-label" aria-hidden="true">CONTACT</span>
     </h2>
     <ul class="contact-list" role="list" data-reveal="delayed">
-      <li>
-        <span class="contact-label">GITHUB</span>
-        <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer"
-          >{SOCIAL_LINKS.github.replace(/^https?:\/\//, "")}</a
-        >
-      </li>
-      <li>
-        <span class="contact-label">EMAIL</span>
-        <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
-      </li>
+      {
+        SOCIAL_LINKS.github && (
+          <li>
+            <span class="contact-label">GITHUB</span>
+            <a
+              href={SOCIAL_LINKS.github}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {SOCIAL_LINKS.github.replace(/^https?:\/\//, "")}
+            </a>
+          </li>
+        )
+      }
+      {
+        EMAIL && (
+          <li>
+            <span class="contact-label">EMAIL</span>
+            <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+          </li>
+        )
+      }
     </ul>
   </section>
 </BaseLayout>
