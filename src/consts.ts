@@ -23,7 +23,7 @@ export const SOCIAL_LINKS = {
   youtube: "",
 };
 
-// 公開用メールアドレス
+// 公開用メールアドレス（使わない場合は空文字にする＝連絡先セクションに表示しない）
 export const EMAIL = "you@example.com";
 
 // 著者表示名（ヒーロー等の見せる場所で参照）
