@@ -1,6 +1,6 @@
 # コーディング規約 (Coding Standards)
 
-homepage プロジェクトのコーディング規約ドキュメントです。
+本テンプレートのコーディング規約ドキュメントです。
 一貫したスタイルでコードを書くための指針を定義しています。
 
 ---
@@ -52,7 +52,7 @@ homepage プロジェクトのコーディング規約ドキュメントです�
 ### ディレクトリ構造
 
 ```
-homepage/
+astro-cms-homepage-template/
 ├── public/
 │   ├── admin/              # Sveltia CMS 管理画面
 │   │   └── config.yml      # CMS設定
