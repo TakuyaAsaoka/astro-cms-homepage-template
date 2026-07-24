@@ -25,3 +25,8 @@ pnpm-debug.log*
 
 # superpowers ブレインストーミング用の一時ファイル
 .superpowers/
+
+# 作者の作業記録（spec / plan）。本リポジトリはテンプレート配布用のため、
+# 配布物に作者固有の作業記録を含めない。設計判断は PR 本文に残す。
+docs/records/
+docs/superpowers/
