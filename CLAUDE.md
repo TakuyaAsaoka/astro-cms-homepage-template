@@ -40,7 +40,9 @@ npm run format        # Prettier整形
 npm run format:check  # 整形チェック
 ```
 
-品質ゲート（マージ前検証）は次の4コマンドを warning 0 件で通す:
+## 品質ゲート
+
+以下を warning 0件で全パスする（マージ前検証）:
 
 ```bash
 npm run build && npm run test:run && npm run typecheck && npm run lint
