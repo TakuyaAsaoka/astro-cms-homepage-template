@@ -14,7 +14,10 @@ export const DEFAULT_OG_IMAGE = `${BASE_PATH}images/og.png`;
 
 export const SITE_TITLE = "My Homepage";
 export const SITE_DESCRIPTION = "A personal homepage template built with Astro";
-// サイトの言語。全ページの <html lang> と og:locale に反映される
+// サイトの言語。サイト本体の全ページの <html lang> と og:locale に反映される
+// （CMS管理画面 public/admin/index.html は Astro を通らないため対象外）。
+// BCP47 の言語タグのみを入れる（例: "ja", "en"）。地域まで指定する場合は
+// lang は "en-GB"・og:locale は "en_GB" と形式が異なるため、定数の分離が必要。
 export const SITE_LANG = "ja";
 
 // SNSリンク（使わないものは空文字にする）
