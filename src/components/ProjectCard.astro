@@ -16,23 +16,31 @@ const { title, description, tags, slug } = Astro.props;
   <h3>
     <a href={`${BASE_PATH}projects/${slug}/`}>{title}</a>
   </h3>
-  <p>{description}</p>
+  <p class="project-description">{description}</p>
   <TagList tags={tags} />
 </article>
 
 <style>
+  /* 罫線で区切る縦組み。囲み枠（border + 角丸）ではなく細罫を使い、Homeの
+     和文ミニマル意匠（和数字見出し・ヒーロー罫線）と同じ語彙で揃える。
+     隣接カードで罫を共有するため、上罫は先頭カードのみに与える。 */
   .project-card {
-    padding: 1rem;
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
-    margin-bottom: 1rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .project-card:first-of-type {
+    border-top: 1px solid var(--color-border);
   }
   .project-card h3 a {
     text-decoration: none;
     color: inherit;
   }
+  .project-description {
+    margin-top: 0.5rem;
+    color: var(--color-ink-soft);
+  }
   /* TagList は余白を持たないため、カード内の余白は消費側で与える */
   .project-card :global(.tags) {
-    margin-top: 0.5rem;
+    margin-top: 0.75rem;
   }
 </style>
