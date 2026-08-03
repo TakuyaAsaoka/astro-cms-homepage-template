@@ -9,20 +9,54 @@ const projects = publishedProjects(await getCollection("projects"));
 
 <BaseLayout title="Projects" description="My projects">
   <section>
-    <h1>Projects</h1>
+    {
+      /* Homeのセクション見出しと同じ語彙を使う（和数字は Home の連番のためのものなので付けない）。
+         用語も Home の「制作」に揃え、ページ間で呼び方が変わらないようにする。 */
+    }
+    <h1 class="section-heading page-heading">
+      <span class="section-title">制作</span>
+      <span class="section-label" aria-hidden="true">PROJECTS</span>
+    </h1>
     {
       projects.length > 0 ? (
-        projects.map((project) => (
-          <ProjectCard
-            title={project.data.title}
-            description={project.data.description}
-            tags={project.data.tags}
-            slug={project.id}
-          />
-        ))
+        <ul class="project-grid" role="list">
+          {projects.map((project) => (
+            <li>
+              <ProjectCard
+                title={project.data.title}
+                description={project.data.description}
+                tags={project.data.tags}
+                slug={project.id}
+              />
+            </li>
+          ))}
+        </ul>
       ) : (
         <p>No projects yet.</p>
       )
     }
   </section>
 </BaseLayout>
+
+<style>
+  /* デスクトップは2カラム、モバイルは1カラム。実効コンテンツ幅（約736px）では
+     3カラム以上が成立しないため、auto-fit ではなく固定2カラム＋メディアクエリで
+     折返し点を明示する。 */
+  /* minmax(0, 1fr): 素の 1fr はカラム幅の下限がコンテンツの min-content になるため、
+     折返し不能な要素が1つ入るだけでカラム比が崩れる。下限を0にして構造的に防ぐ。 */
+  .project-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  /* li を grid にして内側の article を行の高さまで stretch させ、カード高さを揃える */
+  .project-grid li {
+    display: grid;
+  }
+  @media (max-width: 767px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

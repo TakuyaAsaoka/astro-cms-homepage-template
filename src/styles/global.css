@@ -264,6 +264,39 @@ main {
   font-size: 0.9rem;
   letter-spacing: 0.1em;
 }
+/* 一覧ページの見出し。.section-heading の語彙を和数字なしで流用する
+   （.home-section の外にあるため、セクション番号のカウンタは進まない）。
+   .section-heading と同詳細度のため、余白の上書きは記述順に依存する。この規則は
+   必ず .section-heading より後に置くこと。 */
+.page-heading {
+  font-size: 1.65rem;
+  margin-block: 2.5rem 2rem;
+}
+
+/* ===== Homeページ: 制作（ピックアップ抜粋） ===== */
+/* 一覧ページのカードとは意匠を分ける。Homeは上から通読させる軸なので、囲み枠で
+   視線を止めず、罫線区切りの2行組み（タイトル＋説明）にする。 */
+.pickup-list {
+  list-style: none;
+}
+.pickup-list li {
+  padding-block: 1.1rem;
+  border-top: 1px solid var(--color-border);
+}
+/* 罫線を上下対称に閉じる（各項目の上罫線＋最終項目の下罫線） */
+.pickup-list li:last-child {
+  border-bottom: 1px solid var(--color-border);
+}
+.pickup-title {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+}
+.pickup-desc {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--color-ink-soft);
+}
 
 /* ===== Homeページ: スキル（・区切りの文字組み） ===== */
 .skill-list {
