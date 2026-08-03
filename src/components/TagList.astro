@@ -8,7 +8,7 @@ const { tags } = Astro.props;
 
 {
   tags.length > 0 && (
-    <ul class="tags">
+    <ul class="tags" role="list">
       {tags.map((tag) => (
         <li class="tag">{tag}</li>
       ))}
@@ -18,15 +18,22 @@ const { tags } = Astro.props;
 
 <style>
   /* 余白（margin）はコンポーネント側で持たない。消費側が :global(.tags) で調整する */
+  /* 中黒区切りの文字組み。塗りのあるピル型ではなく、Homeのスキル一覧（.skill-list）
+     と同じ語彙で組み、サイト全体の文字組みを統一する。
+     list-style: none は Safari でリストの読み上げが落ちるため role="list" を明示する */
   .tags {
-    display: flex;
     list-style: none;
-    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    letter-spacing: 0.06em;
   }
   .tag {
-    font-size: 0.85rem;
-    padding: 0.1rem 0.5rem;
-    background: var(--color-surface);
-    border-radius: 2px;
+    display: inline;
+  }
+  /* 区切りの中黒は視覚的な装飾のため、代替テキストを空にして読み上げから外す */
+  .tag + .tag::before {
+    content: "・" / "";
+    color: var(--accent);
+    margin: 0 0.5em;
   }
 </style>

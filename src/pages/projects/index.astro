@@ -2,10 +2,9 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
 import { getCollection } from "astro:content";
+import { publishedProjects } from "../../lib/projects";
 
-const projects = (await getCollection("projects"))
-  .filter((p) => !p.data.draft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const projects = publishedProjects(await getCollection("projects"));
 ---
 
 <BaseLayout title="Projects" description="My projects">
