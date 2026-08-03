@@ -221,11 +221,12 @@ body {
    条件で描画されないセクション（制作が0件・連絡先が全て空）があるため、番号を
    マークアップに直書きすると欠番や番号の飛びが発生する。描画された .home-section
    だけを数えることで、セクションの増減・並べ替えに番号が自動追従する。
-   @counter-style 未対応の環境では算用数字（1, 2, 3…）にフォールバックする。 */
+   @counter-style 未対応の環境、および記号を使い切った11個目以降は算用数字にフォールバックする。 */
 @counter-style kansuji {
   system: fixed;
-  symbols: "壱" "弐" "参" "肆" "伍" "陸" "漆" "捌";
+  symbols: "壱" "弐" "参" "肆" "伍" "陸" "漆" "捌" "玖" "拾";
   suffix: "";
+  fallback: decimal;
 }
 main {
   counter-reset: section;
@@ -274,8 +275,9 @@ main {
 .skill-list li {
   display: inline;
 }
+/* 区切りの中黒は視覚的な装飾のため、代替テキストを空にして読み上げから外す */
 .skill-list li + li::before {
-  content: "・";
+  content: "・" / "";
   color: var(--accent);
   margin: 0 0.5em;
 }

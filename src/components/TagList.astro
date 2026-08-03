@@ -30,8 +30,9 @@ const { tags } = Astro.props;
   .tag {
     display: inline;
   }
+  /* 区切りの中黒は視覚的な装飾のため、代替テキストを空にして読み上げから外す */
   .tag + .tag::before {
-    content: "・";
+    content: "・" / "";
     color: var(--accent);
     margin: 0 0.5em;
   }

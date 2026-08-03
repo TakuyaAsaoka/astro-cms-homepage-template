@@ -31,8 +31,9 @@ const { title, description, tags, slug } = Astro.props;
   .project-card:first-of-type {
     border-top: 1px solid var(--color-border);
   }
+  /* 下線は .main-inner a のアクセント下線を継承する（打ち消さない）。
+     囲み枠を廃した意匠では、下線がタイトルの操作可能性を示す唯一の手がかりになる */
   .project-card h3 a {
-    text-decoration: none;
     color: inherit;
   }
   .project-description {
