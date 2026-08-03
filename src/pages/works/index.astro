@@ -1,13 +1,13 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import ProjectCard from "../../components/ProjectCard.astro";
+import WorkCard from "../../components/WorkCard.astro";
 import { getCollection } from "astro:content";
-import { publishedProjects } from "../../lib/projects";
+import { publishedWorks } from "../../lib/works";
 
-const projects = publishedProjects(await getCollection("projects"));
+const works = publishedWorks(await getCollection("works"));
 ---
 
-<BaseLayout title="Projects" description="My projects">
+<BaseLayout title="Works" description="My works">
   <section>
     {
       /* Homeのセクション見出しと同じ語彙を使う（和数字は Home の連番のためのものなので付けない）。
@@ -15,24 +15,24 @@ const projects = publishedProjects(await getCollection("projects"));
     }
     <h1 class="section-heading page-heading">
       <span class="section-title">制作</span>
-      <span class="section-label" aria-hidden="true">PROJECTS</span>
+      <span class="section-label" aria-hidden="true">WORKS</span>
     </h1>
     {
-      projects.length > 0 ? (
-        <ul class="project-grid" role="list">
-          {projects.map((project) => (
+      works.length > 0 ? (
+        <ul class="work-grid" role="list">
+          {works.map((work) => (
             <li>
-              <ProjectCard
-                title={project.data.title}
-                description={project.data.description}
-                tags={project.data.tags}
-                slug={project.id}
+              <WorkCard
+                title={work.data.title}
+                description={work.data.description}
+                tags={work.data.tags}
+                slug={work.id}
               />
             </li>
           ))}
         </ul>
       ) : (
-        <p>No projects yet.</p>
+        <p>制作はまだありません。</p>
       )
     }
   </section>
@@ -44,18 +44,18 @@ const projects = publishedProjects(await getCollection("projects"));
      折返し点を明示する。 */
   /* minmax(0, 1fr): 素の 1fr はカラム幅の下限がコンテンツの min-content になるため、
      折返し不能な要素が1つ入るだけでカラム比が崩れる。下限を0にして構造的に防ぐ。 */
-  .project-grid {
+  .work-grid {
     list-style: none;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.25rem;
   }
   /* li を grid にして内側の article を行の高さまで stretch させ、カード高さを揃える */
-  .project-grid li {
+  .work-grid li {
     display: grid;
   }
   @media (max-width: 767px) {
-    .project-grid {
+    .work-grid {
       grid-template-columns: 1fr;
     }
   }

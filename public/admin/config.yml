@@ -10,9 +10,9 @@ media_folder: "public/images"
 public_folder: "/your-repo/images"
 
 collections:
-  - name: "projects"
-    label: "Projects"
-    folder: "src/content/projects"
+  - name: "works"
+    label: "Works"
+    folder: "src/content/works"
     create: true
     slug: "{{slug}}"
     fields:

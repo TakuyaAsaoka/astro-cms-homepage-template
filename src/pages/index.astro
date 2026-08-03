@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
-import { publishedProjects } from "../lib/projects";
+import { publishedWorks } from "../lib/works";
 import {
   BASE_PATH,
   SITE_DESCRIPTION,
@@ -14,10 +14,7 @@ import {
 const skills = ["Skill 1", "Skill 2", "Skill 3", "Skill 4"];
 
 // Homeに載せるピックアップ件数。増減はこの数字だけを変える
-const pickupProjects = publishedProjects(await getCollection("projects")).slice(
-  0,
-  3,
-);
+const pickupWorks = publishedWorks(await getCollection("works")).slice(0, 3);
 ---
 
 <BaseLayout title="Home" description={SITE_DESCRIPTION}>
@@ -33,36 +30,33 @@ const pickupProjects = publishedProjects(await getCollection("projects")).slice(
   </div>
 
   {
-    /* 公開プロジェクトが0件なら、見出しごと制作セクションを描画しない。
+    /* 公開されている制作が0件なら、見出しごと制作セクションを描画しない。
        中身が空なら容器ごと隠す挙動を連絡先セクション・Footer と統一する。
        セクション番号はCSSカウンタで自動採番されるため、ここが消えても欠番は出ない。 */
   }
   {
-    pickupProjects.length > 0 && (
+    pickupWorks.length > 0 && (
       <section class="home-section">
         <h2 class="section-heading" data-reveal>
           <span class="section-num" aria-hidden="true" />
           <span class="section-title">制作</span>
           <span class="section-label" aria-hidden="true">
-            PROJECTS
+            WORKS
           </span>
         </h2>
         <div data-reveal="delayed">
           <ul class="pickup-list" role="list">
-            {pickupProjects.map((project) => (
+            {pickupWorks.map((work) => (
               <li>
-                <a
-                  class="pickup-title"
-                  href={`${BASE_PATH}projects/${project.id}/`}
-                >
-                  {project.data.title}
+                <a class="pickup-title" href={`${BASE_PATH}works/${work.id}/`}>
+                  {work.data.title}
                 </a>
-                <p class="pickup-desc">{project.data.description}</p>
+                <p class="pickup-desc">{work.data.description}</p>
               </li>
             ))}
           </ul>
           <p class="section-more">
-            <a href={`${BASE_PATH}projects/`}>制作一覧へ</a>
+            <a href={`${BASE_PATH}works/`}>制作一覧へ</a>
           </p>
         </div>
       </section>

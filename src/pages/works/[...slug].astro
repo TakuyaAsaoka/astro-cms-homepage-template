@@ -2,33 +2,33 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import TagList from "../../components/TagList.astro";
 import { getCollection, render } from "astro:content";
-import { publishedProjects } from "../../lib/projects";
+import { publishedWorks } from "../../lib/works";
 
 export async function getStaticPaths() {
-  return publishedProjects(await getCollection("projects")).map((project) => ({
-    params: { slug: project.id },
-    props: { project },
+  return publishedWorks(await getCollection("works")).map((work) => ({
+    params: { slug: work.id },
+    props: { work },
   }));
 }
 
-const { project } = Astro.props;
-const { Content } = await render(project);
+const { work } = Astro.props;
+const { Content } = await render(work);
 ---
 
-<BaseLayout title={project.data.title} description={project.data.description}>
+<BaseLayout title={work.data.title} description={work.data.description}>
   <article>
     {
       /* 一覧ページと見出しのサイズ・余白を揃える。.section-heading は和文タイトルと
          英字ラベルを横に組むための規則なので、ここでは付けない。 */
     }
-    <h1 class="page-heading">{project.data.title}</h1>
-    <time>{project.data.pubDate.toLocaleDateString("ja-JP")}</time>
-    <TagList tags={project.data.tags} />
+    <h1 class="page-heading">{work.data.title}</h1>
+    <time>{work.data.pubDate.toLocaleDateString("ja-JP")}</time>
+    <TagList tags={work.data.tags} />
     {
-      project.data.url && (
+      work.data.url && (
         <p>
-          <a href={project.data.url} target="_blank" rel="noopener noreferrer">
-            View Project
+          <a href={work.data.url} target="_blank" rel="noopener noreferrer">
+            制作物のページを見る
           </a>
         </p>
       )
