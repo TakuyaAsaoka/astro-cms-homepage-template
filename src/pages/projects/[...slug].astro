@@ -2,15 +2,13 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import TagList from "../../components/TagList.astro";
 import { getCollection, render } from "astro:content";
+import { publishedProjects } from "../../lib/projects";
 
 export async function getStaticPaths() {
-  const projects = await getCollection("projects");
-  return projects
-    .filter((p) => !p.data.draft)
-    .map((project) => ({
-      params: { slug: project.id },
-      props: { project },
-    }));
+  return publishedProjects(await getCollection("projects")).map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
 }
 
 const { project } = Astro.props;
