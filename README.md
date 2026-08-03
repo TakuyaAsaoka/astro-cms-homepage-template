@@ -16,7 +16,7 @@ GitHub Pages へのデプロイに対応しています。
 | CMS・コンテンツ | Content Collections + Zodスキーマ | 不正なフロントマターをビルド時に検出。型安全にコンテンツを扱える |
 | CMS・コンテンツ | 下書き（draft）機能 | 公開前のコンテンツを本番から自動除外 |
 | カスタマイズ | `consts.ts` 一元管理 | サイト名・SNSリンク・著者名・著作権表記名を1ファイルの編集だけで差し替えられる |
-| カスタマイズ | 未設定項目の自動非表示 | SNSリンク・メールアドレスを空文字にすると、その項目だけでなく空になったセクション（ホームの連絡先・フッターのSNS一覧）ごと非表示になる |
+| カスタマイズ | 未設定項目の自動非表示 | 空文字にした項目は表示されない。ホームの連絡先（GitHub・メールアドレス）とフッターのSNS一覧は、中身が全て空になるとセクションごと非表示になる |
 | カスタマイズ | デザイントークン | 色・フォント・余白をCSS変数で一元管理。トークンを差し替えるだけでブランド変更できる |
 | デザイン | ダークモード | OS設定に自動追従。全カラートークンをダーク用に再設計済み（ネイティブUIも追従） |
 | デザイン | レスポンシブ対応 | clamp による流動レイアウト + モバイルはハンバーガーメニュー |
@@ -74,7 +74,7 @@ export const COPYRIGHT_HOLDER = "Your Name"; // 著作権表記名（フッタ�
 export const NOTE_RSS_URL = ""; // note の RSS URL（例: "https://note.com/your-name/rss"）
 ```
 
-> `SOCIAL_LINKS` の各項目と `EMAIL` は、空文字にすると表示されません（全て空文字ならセクションごと非表示）。`NOTE_RSS_URL` が空文字の場合、Blogページは設定を促す案内を表示します。
+> `SOCIAL_LINKS` の各項目と `EMAIL` は、空文字にすると表示されません。ホームの連絡先セクションは `SOCIAL_LINKS.github` と `EMAIL` の両方が、フッターのSNS一覧は `SOCIAL_LINKS` の全項目が空文字のとき、セクションごと非表示になります。`NOTE_RSS_URL` が空文字の場合、Blogページは設定を促す案内を表示します。
 
 4. `astro.config.mjs` の `site` と `base` をデプロイ形態に合わせて設定
 
@@ -138,6 +138,7 @@ npm run dev
 │   ├── consts.test.ts      # サイト定数のテスト
 │   └── content.config.ts   # コンテンツスキーマ定義
 ├── .gitignore
+├── .prettierignore         # Prettier除外設定
 ├── .prettierrc.json        # Prettier設定
 ├── astro.config.mjs        # Astro設定
 ├── CLAUDE.md               # AI開発ルール
@@ -157,7 +158,7 @@ npm run dev
 | Blog | `/blog` | ブログ記事一覧 |
 | Projects | `/projects` | プロジェクト一覧 |
 | Projects 詳細 | `/projects/[slug]` | プロジェクト詳細（Markdown 1件につき1ページ） |
-| 404 | 存在しないパス | noindex 付きのエラーページ |
+| 404 | `/404`（存在しないパスへのアクセス時） | noindex 付きのエラーページ |
 
 ## コマンド
 
