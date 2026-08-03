@@ -264,8 +264,9 @@ main {
   font-size: 0.9rem;
   letter-spacing: 0.1em;
 }
-/* 一覧ページの見出し。.section-heading の語彙を和数字なしで流用する
-   （.home-section の外にあるため、セクション番号のカウンタは進まない）。
+/* 一覧・詳細ページの見出し。担うのはサイズと余白だけなので、.section-heading と
+   併用しても（一覧: 和文＋英字ラベルの横組み）単独でも（詳細: タイトル1要素）使える。
+   .home-section の外にあるため、セクション番号のカウンタは進まない。
    .section-heading と同詳細度のため、余白の上書きは記述順に依存する。この規則は
    必ず .section-heading より後に置くこと。 */
 .page-heading {

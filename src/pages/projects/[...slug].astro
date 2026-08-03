@@ -17,7 +17,11 @@ const { Content } = await render(project);
 
 <BaseLayout title={project.data.title} description={project.data.description}>
   <article>
-    <h1>{project.data.title}</h1>
+    {
+      /* 一覧ページと見出しのサイズ・余白を揃える。.section-heading は和文タイトルと
+         英字ラベルを横に組むための規則なので、ここでは付けない。 */
+    }
+    <h1 class="page-heading">{project.data.title}</h1>
     <time>{project.data.pubDate.toLocaleDateString("ja-JP")}</time>
     <TagList tags={project.data.tags} />
     {
