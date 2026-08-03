@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import ProjectCard from "../components/ProjectCard.astro";
 import { getCollection } from "astro:content";
 import { publishedProjects } from "../lib/projects";
 import {
@@ -49,14 +48,19 @@ const pickupProjects = publishedProjects(await getCollection("projects")).slice(
           </span>
         </h2>
         <div data-reveal="delayed">
-          {pickupProjects.map((project) => (
-            <ProjectCard
-              title={project.data.title}
-              description={project.data.description}
-              tags={project.data.tags}
-              slug={project.id}
-            />
-          ))}
+          <ul class="pickup-list" role="list">
+            {pickupProjects.map((project) => (
+              <li>
+                <a
+                  class="pickup-title"
+                  href={`${BASE_PATH}projects/${project.id}/`}
+                >
+                  {project.data.title}
+                </a>
+                <p class="pickup-desc">{project.data.description}</p>
+              </li>
+            ))}
+          </ul>
           <p class="section-more">
             <a href={`${BASE_PATH}projects/`}>制作一覧へ</a>
           </p>
