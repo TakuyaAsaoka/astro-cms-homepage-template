@@ -12,10 +12,11 @@ GitHub Pages へのデプロイに対応しています。
 | ページ | Blog（note RSS連携） | noteの記事を自動取得して一覧表示。URL未設定時は案内を表示し、取得失敗してもビルドは落ちない |
 | ページ | Projects 一覧・詳細 | Markdownを1枚書くだけで実績ページが増える（タグ・公開日順・下書き対応） |
 | ページ | 404ページ | noindex付きのエラーページを標準装備 |
-| CMS・コンテンツ | Sveltia CMS 管理画面 | ブラウザ（`/admin`）だけでコンテンツの作成・更新ができる。GitHubにコミットとして保存 |
+| CMS・コンテンツ | Sveltia CMS 管理画面 | ブラウザ（`/admin`）だけで Projects コンテンツの作成・更新ができる。GitHubにコミットとして保存 |
 | CMS・コンテンツ | Content Collections + Zodスキーマ | 不正なフロントマターをビルド時に検出。型安全にコンテンツを扱える |
 | CMS・コンテンツ | 下書き（draft）機能 | 公開前のコンテンツを本番から自動除外 |
-| カスタマイズ | `consts.ts` 一元管理 | サイト名・SNSリンク・著作権者を1ファイルの編集だけで差し替えられる |
+| カスタマイズ | `consts.ts` 一元管理 | サイト名・SNSリンク・著者名・著作権表記名を1ファイルの編集だけで差し替えられる |
+| カスタマイズ | 未設定項目の自動非表示 | 空文字にした項目は表示されない。ホームの連絡先（GitHub・メールアドレス）とフッターのSNS一覧は、中身が全て空になるとセクションごと非表示になる |
 | カスタマイズ | デザイントークン | 色・フォント・余白をCSS変数で一元管理。トークンを差し替えるだけでブランド変更できる |
 | デザイン | ダークモード | OS設定に自動追従。全カラートークンをダーク用に再設計済み（ネイティブUIも追従） |
 | デザイン | レスポンシブ対応 | clamp による流動レイアウト + モバイルはハンバーガーメニュー |
@@ -25,6 +26,7 @@ GitHub Pages へのデプロイに対応しています。
 | SEO | OGP / Twitterカード | SNSシェア時のプレビューを自動生成。og:image はデフォルト画像に自動フォールバック |
 | SEO | canonical URL | `site` 設定から自動生成。重複コンテンツを防止 |
 | アクセシビリティ | ARIA属性・セマンティックHTML | メニュー開閉は `aria-expanded` を単一の状態源として管理。装飾要素は `aria-hidden` で除外 |
+| アクセシビリティ | フォーカス可視化の統一 | キーボード操作時のフォーカスリングを `:focus-visible` でサイト横断に適用。文字色トークン基準のため、テーマが変わってもコントラストが保たれる |
 | アクセシビリティ | WCAG AA コントラスト | ライト・ダーク両モードで補助テキストまでコントラスト比を設計（AA準拠） |
 | アクセシビリティ | prefers-reduced-motion 対応 | 視差効果を減らす設定で全アニメーションを静止表示に |
 | アクセシビリティ | プログレッシブエンハンスメント | JS無効環境でもナビゲーション・全コンテンツが機能する |
@@ -66,8 +68,13 @@ export const SOCIAL_LINKS = {
   youtube: "",
 };
 export const EMAIL = "you@example.com";
-export const SITE_AUTHOR = "Your Name";
+export const SITE_AUTHOR = "Your Name"; // 著者表示名（ヒーロー等）
+export const COPYRIGHT_HOLDER = "Your Name"; // 著作権表記名（フッターの © 表記）
+
+export const NOTE_RSS_URL = ""; // note の RSS URL（例: "https://note.com/your-name/rss"）
 ```
+
+> `SOCIAL_LINKS` の各項目と `EMAIL` は、空文字にすると表示されません。ホームの連絡先セクションは `SOCIAL_LINKS.github` と `EMAIL` の両方が、フッターのSNS一覧は `SOCIAL_LINKS` の全項目が空文字のとき、セクションごと非表示になります。`NOTE_RSS_URL` が空文字の場合、Blogページは設定を促す案内を表示します。
 
 4. `astro.config.mjs` の `site` と `base` をデプロイ形態に合わせて設定
 
@@ -117,20 +124,29 @@ npm run dev
 │   ├── admin/              # Sveltia CMS 管理画面
 │   │   └── config.yml      # CMS設定
 │   ├── images/             # 画像ファイル
+│   ├── favicon.ico
 │   └── favicon.svg
 ├── src/
 │   ├── components/         # 再利用可能なコンポーネント
 │   ├── content/            # コンテンツコレクション（Markdown）
 │   ├── layouts/            # ページレイアウト
 │   ├── pages/              # ページ（ファイルベースルーティング）
+│   ├── scripts/            # クライアントスクリプト（スクロール登場処理とテスト）
 │   ├── styles/             # グローバルスタイル
+│   ├── test/               # テスト用ヘルパー（IntersectionObserverモック）
 │   ├── consts.ts           # サイト定数
+│   ├── consts.test.ts      # サイト定数のテスト
 │   └── content.config.ts   # コンテンツスキーマ定義
 ├── .gitignore
+├── .prettierignore         # Prettier除外設定
+├── .prettierrc.json        # Prettier設定
 ├── astro.config.mjs        # Astro設定
 ├── CLAUDE.md               # AI開発ルール
+├── eslint.config.js        # ESLint設定
 ├── package.json
-└── tsconfig.json           # TypeScript設定
+├── tsconfig.json           # TypeScript設定
+├── vitest.config.ts        # Vitest設定
+└── vitest.setup.ts         # テスト共通セットアップ
 ```
 
 ## ページ構成
@@ -140,7 +156,9 @@ npm run dev
 | ホーム | `/` | トップページ |
 | About | `/about` | 自己紹介 |
 | Blog | `/blog` | ブログ記事一覧 |
-| Projects | `/projects` | プロジェクト一覧・詳細 |
+| Projects | `/projects` | プロジェクト一覧 |
+| Projects 詳細 | `/projects/[slug]` | プロジェクト詳細（Markdown 1件につき1ページ） |
+| 404 | `/404`（存在しないパスへのアクセス時） | noindex 付きのエラーページ |
 
 ## コマンド
 
@@ -152,6 +170,11 @@ npm run dev
 | `npm run dev` | 開発サーバーを起動（`localhost:4321`） |
 | `npm run build` | プロダクションビルド（`./dist/` に出力） |
 | `npm run preview` | ビルド結果をローカルでプレビュー |
+| `npm test` | テスト（ウォッチ） |
+| `npm run test:run` | テスト（1回実行） |
+| `npm run typecheck` | 型チェック（`astro check`） |
+| `npm run lint` / `lint:fix` | ESLint 実行 / 自動修正 |
+| `npm run format` / `format:check` | Prettier 整形 / 整形チェック |
 
 ## デプロイ
 
