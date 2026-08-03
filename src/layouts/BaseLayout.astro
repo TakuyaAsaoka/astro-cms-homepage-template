@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import { SITE_LANG } from "../consts";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
@@ -16,7 +17,7 @@ const { title, description, image, noindex } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang={SITE_LANG}>
   <head>
     <BaseHead
       title={title}

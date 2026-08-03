@@ -14,6 +14,7 @@ export const DEFAULT_OG_IMAGE = `${BASE_PATH}images/og.png`;
 
 export const SITE_TITLE = "My Homepage";
 export const SITE_DESCRIPTION = "A personal homepage template built with Astro";
+// サイトの言語。全ページの <html lang> と og:locale に反映される
 export const SITE_LANG = "ja";
 
 // SNSリンク（使わないものは空文字にする）
