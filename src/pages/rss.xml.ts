@@ -7,13 +7,13 @@ import { getSiteSettings } from "../site-settings";
 
 // 制作コレクションからRSSフィードを生成する（draft除外・公開日の新しい順）
 export async function GET(context: APIContext) {
-  const site = await getSiteSettings();
-  const works = publishedWorks(await getCollection("works"));
-
   // astro.config.mjs で site を設定していないと URL を解決できない。設定漏れを早期に検知する
   if (!context.site) {
     throw new Error("astro.config.mjs に site が設定されていません");
   }
+
+  const site = await getSiteSettings();
+  const works = publishedWorks(await getCollection("works"));
 
   // context.site は base を含まないため、サイト実体の URL に base を付与する。
   // これが channel の <link> になり、各 item の相対 link もこの URL を基準に解決される
