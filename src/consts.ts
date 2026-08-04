@@ -14,11 +14,17 @@ export const DEFAULT_OG_IMAGE = `${BASE_PATH}images/og.png`;
 
 export const SITE_TITLE = "My Homepage";
 export const SITE_DESCRIPTION = "A personal homepage template built with Astro";
-// サイトの言語。サイト本体の全ページの <html lang> と og:locale に反映される
+// サイトの言語。サイト本体の全ページの <html lang> に反映される
 // （CMS管理画面 public/admin/index.html は Astro を通らないため対象外）。
-// BCP47 の言語タグのみを入れる（例: "ja", "en"）。地域まで指定する場合は
-// lang は "en-GB"・og:locale は "en_GB" と形式が異なるため、定数の分離が必要。
+// BCP47 の言語タグのみを入れる（例: "ja", "en"）。
+// og:locale は地域まで必要かつ形式も異なる（ja_JP）ため SITE_LOCALE を使う。
 export const SITE_LANG = "ja";
+
+// サイトのロケール（言語-地域）。og:locale の元になる。
+// BCP47 形式の言語-地域の2要素のみ（例: "ja-JP", "en-GB"）で書く。
+// スクリプト付き（zh-Hant-TW 等）は変換が対応していないため不可。
+// og:locale が要求するアンダースコア形式（ja_JP）への変換は BaseHead が行う。
+export const SITE_LOCALE = "ja-JP";
 
 // RSSフィードの日付を表示するときの基準タイムゾーン（IANAのタイムゾーン名）。
 // Astro はビルド時に日付を確定するため、指定しないとビルドマシンのTZ
