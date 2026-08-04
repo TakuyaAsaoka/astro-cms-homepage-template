@@ -27,6 +27,7 @@ GitHub Pages へのデプロイに対応しています。
 | SEO | OGP / Twitterカード | SNSシェア時のプレビューを自動生成。og:image はデフォルト画像に自動フォールバック |
 | SEO | canonical URL | `site` 設定から自動生成。重複コンテンツを防止 |
 | SEO | サイトマップ自動生成 | ビルド時に `sitemap-index.xml`（実体は `sitemap-0.xml`）を生成（`@astrojs/sitemap`）。`site`・`base` 設定に自動追従 |
+| SEO | RSSフィード配信 | Works の更新を `/rss.xml` で配信（draft除外・公開日の新しい順）。`<head>` の自動検出リンク付きでRSSリーダーから発見できる |
 | アクセシビリティ | ARIA属性・セマンティックHTML | メニュー開閉は `aria-expanded` を単一の状態源として管理。装飾要素は `aria-hidden` で除外 |
 | アクセシビリティ | フォーカス可視化の統一 | キーボード操作時のフォーカスリングを `:focus-visible` でサイト横断に適用。文字色トークン基準のため、テーマが変わってもコントラストが保たれる |
 | アクセシビリティ | WCAG AA コントラスト | ライト・ダーク両モードで補助テキストまでコントラスト比を設計（AA準拠） |
