@@ -10,6 +10,100 @@ media_folder: "public/images"
 public_folder: "/your-repo/images"
 
 collections:
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - name: "site"
+        label: "Site Settings"
+        file: "src/content/settings/site.yaml"
+        fields:
+          - {
+              label: "Site Title",
+              name: "title",
+              widget: "string",
+              hint: "ヘッダー・ブラウザのタブ・SNS共有時に表示されます",
+            }
+          - {
+              label: "Site Description",
+              name: "description",
+              widget: "string",
+              hint: "検索結果やSNS共有時に表示される説明文",
+            }
+          - {
+              label: "Author",
+              name: "author",
+              widget: "string",
+              hint: "ホームのヒーローに大きく表示される名前",
+            }
+          - {
+              label: "Copyright Holder",
+              name: "copyrightHolder",
+              widget: "string",
+              hint: "フッターの © の後に表示される表記",
+            }
+          - {
+              label: "Email",
+              name: "email",
+              widget: "string",
+              required: false,
+              pattern:
+                [
+                  '^([^@\s]+@[^@\s]+\.[^@\s]+)?$',
+                  "正しいメールアドレスの形式で入力してください（空欄可）",
+                ],
+              hint: "ホームの連絡先に表示されます。空欄にすると表示されません",
+            }
+          - label: "Social Links"
+            name: "social"
+            widget: "object"
+            hint: "空欄にしたリンクは表示されません"
+            fields:
+              - {
+                  label: "GitHub",
+                  name: "github",
+                  widget: "string",
+                  required: false,
+                  pattern:
+                    [
+                      '^(https?://\S+)?$',
+                      "https:// で始まる正しいURLを入力してください（空欄可）",
+                    ],
+                }
+              - {
+                  label: "X (Twitter)",
+                  name: "twitter",
+                  widget: "string",
+                  required: false,
+                  pattern:
+                    [
+                      '^(https?://\S+)?$',
+                      "https:// で始まる正しいURLを入力してください（空欄可）",
+                    ],
+                }
+              - {
+                  label: "YouTube",
+                  name: "youtube",
+                  widget: "string",
+                  required: false,
+                  pattern:
+                    [
+                      '^(https?://\S+)?$',
+                      "https:// で始まる正しいURLを入力してください（空欄可）",
+                    ],
+                }
+          - {
+              label: "note RSS URL",
+              name: "noteRssUrl",
+              widget: "string",
+              required: false,
+              pattern:
+                [
+                  '^(https?://\S+)?$',
+                  "https:// で始まる正しいURLを入力してください（空欄可）",
+                ],
+              hint: "例: https://note.com/your-name/rss（空欄にするとBlogは案内表示になります）",
+            }
+
   - name: "works"
     label: "Works"
     folder: "src/content/works"

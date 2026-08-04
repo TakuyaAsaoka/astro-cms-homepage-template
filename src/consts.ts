@@ -12,8 +12,10 @@ export const BASE_PATH = ensureTrailingSlash(import.meta.env.BASE_URL);
 // 出力される。BaseHead で絶対URL化される。
 export const DEFAULT_OG_IMAGE = `${BASE_PATH}images/og.png`;
 
-export const SITE_TITLE = "My Homepage";
-export const SITE_DESCRIPTION = "A personal homepage template built with Astro";
+// サイト名・著者名・SNSリンク等の表示系の設定は CMS 管理
+// （src/content/settings/site.yaml、取得は src/site-settings.ts）。
+// このファイルにはビルド設定に紐づく技術的な定数だけを置く。
+
 // サイトの言語。サイト本体の全ページの <html lang> に反映される
 // （CMS管理画面 public/admin/index.html は Astro を通らないため対象外）。
 // BCP47 の言語タグのみを入れる（例: "ja", "en"）。
@@ -34,23 +36,3 @@ export const SITE_LOCALE = "ja-JP";
 // Works の pubDate には効かない。あちらは「いつ公開したか」という暦日であり、
 // 見る場所によって動いてはならないため、タイムゾーン変換をしない（date.ts 参照）。
 export const SITE_TIMEZONE = "Asia/Tokyo";
-
-// SNSリンク（使わないものは空文字にする）
-export const SOCIAL_LINKS = {
-  github: "https://github.com/your-username",
-  twitter: "",
-  youtube: "",
-};
-
-// 公開用メールアドレス（使わない場合は空文字にする＝連絡先セクションに表示しない）
-export const EMAIL = "you@example.com";
-
-// 著者表示名（ヒーロー等の見せる場所で参照）
-export const SITE_AUTHOR = "Your Name";
-
-// 著作権表記名（Footer の © 表記で参照）。表示名と著作権者が異なる場合に
-// 個別に変更できるよう SITE_AUTHOR と分離している
-export const COPYRIGHT_HOLDER = "Your Name";
-
-// noteのRSS URL
-export const NOTE_RSS_URL = "";

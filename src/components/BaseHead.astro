@@ -1,10 +1,6 @@
 ---
-import {
-  SITE_TITLE,
-  SITE_LOCALE,
-  BASE_PATH,
-  DEFAULT_OG_IMAGE,
-} from "../consts";
+import { SITE_LOCALE, BASE_PATH, DEFAULT_OG_IMAGE } from "../consts";
+import { getSiteSettings } from "../site-settings";
 
 interface Props {
   title: string;
@@ -14,6 +10,7 @@ interface Props {
 }
 
 const { title, description, image, noindex } = Astro.props;
+const site = await getSiteSettings();
 const canonicalURL = Astro.site
   ? new URL(Astro.url.pathname, Astro.site)
   : Astro.url;
@@ -25,6 +22,8 @@ const ogImage = Astro.site
 // og:locale は "language_TERRITORY" 形式（例: ja_JP）を期待するため、
 // BCP47 形式の SITE_LOCALE のハイフンを変換する
 const ogLocale = SITE_LOCALE.replace("-", "_");
+// 各メタタグ間でタイトル表記を統一するため、フォーマット済みタイトルを1箇所で定義する
+const fullTitle = `${title} | ${site.title}`;
 ---
 
 <meta charset="utf-8" />
@@ -41,8 +40,8 @@ const ogLocale = SITE_LOCALE.replace("-", "_");
 />
 
 <!-- Primary Meta Tags -->
-<title>{title} | {SITE_TITLE}</title>
-<meta name="title" content={`${title} | ${SITE_TITLE}`} />
+<title>{fullTitle}</title>
+<meta name="title" content={fullTitle} />
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalURL} />
 {noindex && <meta name="robots" content="noindex" />}
@@ -50,14 +49,14 @@ const ogLocale = SITE_LOCALE.replace("-", "_");
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={canonicalURL} />
-<meta property="og:title" content={`${title} | ${SITE_TITLE}`} />
+<meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:locale" content={ogLocale} />
-<meta property="og:site_name" content={SITE_TITLE} />
+<meta property="og:site_name" content={site.title} />
 <meta property="og:image" content={ogImage} />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content={`${title} | ${SITE_TITLE}`} />
+<meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />

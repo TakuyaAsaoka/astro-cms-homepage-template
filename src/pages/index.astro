@@ -4,14 +4,10 @@ import { getCollection } from "astro:content";
 import { publishedWorks } from "../lib/works";
 import { fetchFeedItems } from "../lib/rss";
 import FormattedDate from "../components/FormattedDate.astro";
-import {
-  BASE_PATH,
-  SITE_DESCRIPTION,
-  SOCIAL_LINKS,
-  EMAIL,
-  SITE_AUTHOR,
-  NOTE_RSS_URL,
-} from "../consts";
+import { BASE_PATH } from "../consts";
+import { getSiteSettings } from "../site-settings";
+
+const site = await getSiteSettings();
 
 // スキルセクションに表示する技術タグ
 const skills = ["Skill 1", "Skill 2", "Skill 3", "Skill 4"];
@@ -20,15 +16,15 @@ const skills = ["Skill 1", "Skill 2", "Skill 3", "Skill 4"];
 const pickupWorks = publishedWorks(await getCollection("works")).slice(0, 3);
 
 // Homeに載せるブログ記事件数。RSS未設定・取得失敗時は空配列（= セクション非描画）
-const latestPosts = (await fetchFeedItems(NOTE_RSS_URL)).slice(0, 3);
+const latestPosts = (await fetchFeedItems(site.noteRssUrl)).slice(0, 3);
 ---
 
-<BaseLayout title="Home" description={SITE_DESCRIPTION}>
+<BaseLayout title="Home" description={site.description}>
   <div class="home-hero" slot="hero">
     <div class="hero-inner">
       <div class="hero-content">
         <p class="hero-role">YOUR ROLE</p>
-        <h1 class="hero-name">{SITE_AUTHOR}</h1>
+        <h1 class="hero-name">{site.author}</h1>
         <span class="hero-rule" aria-hidden="true"></span>
         <p class="hero-copy">ここにキャッチコピーを入れます。</p>
       </div>
@@ -119,7 +115,7 @@ const latestPosts = (await fetchFeedItems(NOTE_RSS_URL)).slice(0, 3);
        中身が空なら容器ごと隠す挙動を Footer（activeLinks.length > 0）と統一する。 */
   }
   {
-    (SOCIAL_LINKS.github || EMAIL) && (
+    (site.social.github || site.email) && (
       <section class="home-section">
         <h2 class="section-heading" data-reveal>
           <span class="section-num" aria-hidden="true" />
@@ -129,22 +125,22 @@ const latestPosts = (await fetchFeedItems(NOTE_RSS_URL)).slice(0, 3);
           </span>
         </h2>
         <ul class="contact-list" role="list" data-reveal="delayed">
-          {SOCIAL_LINKS.github && (
+          {site.social.github && (
             <li>
               <span class="contact-label">GITHUB</span>
               <a
-                href={SOCIAL_LINKS.github}
+                href={site.social.github}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {SOCIAL_LINKS.github.replace(/^https?:\/\//, "")}
+                {site.social.github.replace(/^https?:\/\//, "")}
               </a>
             </li>
           )}
-          {EMAIL && (
+          {site.email && (
             <li>
               <span class="contact-label">EMAIL</span>
-              <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+              <a href={`mailto:${site.email}`}>{site.email}</a>
             </li>
           )}
         </ul>
