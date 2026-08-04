@@ -102,7 +102,7 @@ astro-cms-homepage-template/
 
 ```typescript
 // ✅ 正しい
-import { SITE_TITLE } from "../consts";
+import { SITE_LANG } from "../consts";
 
 // ✅ Astroコンポーネントのインポート
 import BaseHead from "../components/BaseHead.astro";
@@ -194,7 +194,7 @@ Astroコンポーネントはフロントマター（スクリプト）とテン
 ---
 // 1. インポート
 import BaseHead from "../components/BaseHead.astro";
-import { SITE_TITLE } from "../consts";
+import { getSiteSettings } from "../site-settings";
 
 // 2. Props型定義
 interface Props {
@@ -204,7 +204,8 @@ interface Props {
 
 // 3. Props取得・ロジック
 const { title, description } = Astro.props;
-const formattedTitle = `${title} | ${SITE_TITLE}`;
+const site = await getSiteSettings();
+const formattedTitle = `${title} | ${site.title}`;
 ---
 
 <!-- 4. テンプレート -->
@@ -363,12 +364,12 @@ const [works, blogPosts] = await Promise.all([
 
 ```typescript
 // ✅ 日本語コメント
-// サイトのメタ情報を定義する
-export const SITE_TITLE = "My Homepage";
+// サイトの言語を定義する
+export const SITE_LANG = "ja";
 
 // ❌ 英語コメント
-// Define site metadata
-export const SITE_TITLE = "My Homepage";
+// Define site language
+export const SITE_LANG = "ja";
 ```
 
 ### コメントを書くべき場所
@@ -378,11 +379,8 @@ export const SITE_TITLE = "My Homepage";
 
 ```typescript
 // ✅ 必要なコメント（設定値の意図）
-// SNSリンク（使わないものは空文字にする）
-export const SOCIAL_LINKS = {
-  github: "",
-  twitter: "",
-};
+// RSSフィードの日付を表示するときの基準タイムゾーン（ビルド環境のTZ差で日付がずれるのを防ぐ）
+export const SITE_TIMEZONE = "Asia/Tokyo";
 
 // ❌ 不要なコメント（自明）
 // タイトルを定義
