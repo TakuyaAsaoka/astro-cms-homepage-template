@@ -1,8 +1,8 @@
 import Parser from "rss-parser";
 
-// RSSフィードの1記事。pubDate は欠落時 "" とし、呼び出し側の
-// `item.pubDate &&` ガードがそのまま使えるよう string のまま保持する
-// （Date にすると欠落の表現が Invalid Date になりガードが複雑化する）。
+// RSSフィードの1記事。pubDate は欠落時 "" とし、フィードが返した文字列を
+// そのまま保持する（Date にすると欠落も不正値も Invalid Date に潰れる）。
+// 空文字・不正値をどう描画するかは FormattedDate.astro が引き受ける。
 export interface FeedItem {
   title: string;
   link: string;

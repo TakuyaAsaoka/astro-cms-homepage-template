@@ -61,6 +61,8 @@ npm install
 ```typescript
 export const SITE_TITLE = "あなたのサイト名";
 export const SITE_DESCRIPTION = "サイトの説明";
+export const SITE_LANG = "ja"; // <html lang> と og:locale、日付の書式に反映
+export const SITE_TIMEZONE = "Asia/Tokyo"; // 日付表示の基準タイムゾーン
 
 export const SOCIAL_LINKS = {
   github: "https://github.com/your-username",
