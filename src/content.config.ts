@@ -40,7 +40,7 @@ const settings = defineCollection({
         twitter: emptyableUrl,
         youtube: emptyableUrl,
       })
-      .default({}),
+      .default({ github: "", twitter: "", youtube: "" }),
     noteRssUrl: emptyableUrl,
   }),
 });
