@@ -45,4 +45,31 @@ const settings = defineCollection({
   }),
 });
 
-export const collections = { works, settings };
+// Homeページの文言（CMS管理）。ヒーローの表示名はサイト設定の author を使うためここには持たない
+const home = defineCollection({
+  loader: glob({ pattern: "home.yaml", base: "./src/content/pages" }),
+  schema: z.object({
+    hero: z.object({
+      role: z.string(),
+      tagline: z.string(),
+    }),
+    skills: z.array(z.string()),
+  }),
+});
+
+// Aboutページの文言（CMS管理）。セクションは追加・削除・並び替え可能
+const about = defineCollection({
+  loader: glob({ pattern: "about.yaml", base: "./src/content/pages" }),
+  schema: z.object({
+    lead: z.string(),
+    sections: z.array(
+      z.object({
+        title: z.string(),
+        label: z.string(),
+        body: z.string(),
+      }),
+    ),
+  }),
+});
+
+export const collections = { works, settings, home, about };

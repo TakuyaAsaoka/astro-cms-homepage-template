@@ -1,5 +1,21 @@
 ---
+import { getEntry } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+// CMS管理のAbout文言を取得する。欠落時はビルドを失敗させて設定漏れを早期に検知する
+const aboutEntry = await getEntry("about", "about");
+if (!aboutEntry) {
+  throw new Error("About文言（src/content/pages/about.yaml）が見つかりません");
+}
+const about = aboutEntry.data;
+
+// 本文を空行区切りで段落に分割する
+function toParagraphs(body: string): string[] {
+  return body
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter((paragraph) => paragraph !== "");
+}
 ---
 
 <BaseLayout
@@ -11,40 +27,26 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <span class="section-title">自己紹介</span>
       <span class="section-label" aria-hidden="true">ABOUT</span>
     </h1>
-    <p class="about-lead" data-reveal="delayed">
-      ここに自己紹介のリード文を書きます。あなたの職種や活動を一文で紹介しましょう。
-    </p>
+    <p class="about-lead" data-reveal="delayed">{about.lead}</p>
   </section>
 
-  <section class="about-section">
-    <h2 class="section-heading" data-reveal>
-      <span class="section-title">経歴</span>
-      <span class="section-label" aria-hidden="true">CAREER</span>
-    </h2>
-    <p data-reveal="delayed">
-      ここにこれまでの歩みを書きます。どのような経緯で今の活動に至ったかを綴りましょう。
-    </p>
-  </section>
-
-  <section class="about-section">
-    <h2 class="section-heading" data-reveal>
-      <span class="section-title">強み</span>
-      <span class="section-label" aria-hidden="true">STRENGTHS</span>
-    </h2>
-    <p data-reveal="delayed">
-      ここに得意なことや提供できる価値を書きます。あなたならではの強みを言葉にしましょう。
-    </p>
-  </section>
-
-  <section class="about-section">
-    <h2 class="section-heading" data-reveal>
-      <span class="section-title">価値観</span>
-      <span class="section-label" aria-hidden="true">VALUES</span>
-    </h2>
-    <p data-reveal="delayed">
-      ここに大事にしている考え方を書きます。仕事や活動で大切にしていることを綴りましょう。
-    </p>
-  </section>
+  {
+    about.sections.map((section) => (
+      <section class="about-section">
+        <h2 class="section-heading" data-reveal>
+          <span class="section-title">{section.title}</span>
+          <span class="section-label" aria-hidden="true">
+            {section.label}
+          </span>
+        </h2>
+        <div data-reveal="delayed">
+          {toParagraphs(section.body).map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+      </section>
+    ))
+  }
 </BaseLayout>
 
 <style>
@@ -56,5 +58,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
   .about-section h2 {
     font-size: 1.15rem;
+  }
+  .about-section p + p {
+    margin-top: 0.75em;
   }
 </style>

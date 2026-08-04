@@ -10,6 +10,71 @@ media_folder: "public/images"
 public_folder: "/your-repo/images"
 
 collections:
+  - name: "pages"
+    label: "Pages"
+    files:
+      - name: "home"
+        label: "Home"
+        file: "src/content/pages/home.yaml"
+        fields:
+          - label: "Hero"
+            name: "hero"
+            widget: "object"
+            fields:
+              - {
+                  label: "Role",
+                  name: "role",
+                  widget: "string",
+                  hint: "名前の上に表示される肩書き（例: SOFTWARE ENGINEER）",
+                }
+              - {
+                  label: "Tagline",
+                  name: "tagline",
+                  widget: "string",
+                  hint: "名前の下に表示されるキャッチコピー",
+                }
+          - {
+              label: "Skills",
+              name: "skills",
+              widget: "list",
+              default: [],
+              hint: "技術セクションに表示されます。Enterで追加できます。空にするとセクションごと非表示になります",
+            }
+      - name: "about"
+        label: "About"
+        file: "src/content/pages/about.yaml"
+        fields:
+          - {
+              label: "Lead",
+              name: "lead",
+              widget: "text",
+              hint: "ページ冒頭に表示される導入文",
+            }
+          - label: "Sections"
+            name: "sections"
+            widget: "list"
+            summary: "{{fields.title}}"
+            hint: "セクションの追加・削除・並び替えができます"
+            fields:
+              - {
+                  label: "Title",
+                  name: "title",
+                  widget: "string",
+                  hint: "見出し（例: 経歴）",
+                }
+              - {
+                  label: "Label",
+                  name: "label",
+                  widget: "string",
+                  hint: "見出しの横に表示される英字（例: CAREER）",
+                }
+              - {
+                  label: "Body",
+                  name: "body",
+                  widget: "text",
+                  hint: "本文。空行を入れると段落が分かれます",
+                }
+
   - name: "settings"
     label: "Site Settings"
     files:
