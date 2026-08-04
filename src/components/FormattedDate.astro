@@ -1,0 +1,15 @@
+---
+import { formatDate } from "../lib/date";
+
+interface Props {
+  date: Date | string;
+}
+
+const { date } = Astro.props;
+
+// 整形できない日付（RSSの pubDate 欠落・不正値）は <time> ごと描画しない。
+// datetime 属性のない <time> や "Invalid Date" を出さないための扱い。
+const formatted = formatDate(date);
+---
+
+{formatted && <time datetime={formatted.datetime}>{formatted.text}</time>}

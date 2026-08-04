@@ -15,7 +15,7 @@ GitHub Pages へのデプロイに対応しています。
 | CMS・コンテンツ | Sveltia CMS 管理画面 | ブラウザ（`/admin`）だけで Works コンテンツの作成・更新ができる。GitHubにコミットとして保存 |
 | CMS・コンテンツ | Content Collections + Zodスキーマ | 不正なフロントマターをビルド時に検出。型安全にコンテンツを扱える |
 | CMS・コンテンツ | 下書き（draft）機能 | 公開前のコンテンツを本番から自動除外 |
-| カスタマイズ | `consts.ts` 一元管理 | サイト名・言語・SNSリンク・著者名・著作権表記名を1ファイルの編集だけで差し替えられる |
+| カスタマイズ | `consts.ts` 一元管理 | サイト名・言語・タイムゾーン・SNSリンク・著者名・著作権表記名を1ファイルの編集だけで差し替えられる |
 | カスタマイズ | 未設定項目の自動非表示 | 空文字にした項目は表示されない。ホームの連絡先（GitHub・メールアドレス）とフッターのSNS一覧は、中身が全て空になるとセクションごと非表示になる。ホームの制作セクション（公開されている制作が0件）とBlogセクション（取得できる記事が0件）も非表示になり、セクション番号（壱・弐・参…）はCSSカウンタで自動的に振り直される |
 | カスタマイズ | デザイントークン | 色・フォント・余白をCSS変数で一元管理。トークンを差し替えるだけでブランド変更できる |
 | デザイン | ダークモード | OS設定に自動追従。全カラートークンをダーク用に再設計済み（ネイティブUIも追従） |
@@ -61,6 +61,8 @@ npm install
 ```typescript
 export const SITE_TITLE = "あなたのサイト名";
 export const SITE_DESCRIPTION = "サイトの説明";
+export const SITE_LANG = "ja"; // <html lang> と og:locale、日付の書式に反映
+export const SITE_TIMEZONE = "Asia/Tokyo"; // 日付表示の基準タイムゾーン
 
 export const SOCIAL_LINKS = {
   github: "https://github.com/your-username",

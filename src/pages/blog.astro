@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import FormattedDate from "../components/FormattedDate.astro";
 import { NOTE_RSS_URL } from "../consts";
 import { fetchFeedItems } from "../lib/rss";
 
@@ -25,11 +26,7 @@ const feedItems = await fetchFeedItems(NOTE_RSS_URL);
               <a href={item.link} target="_blank" rel="noopener noreferrer">
                 {item.title}
               </a>
-              {item.pubDate && (
-                <time>
-                  {new Date(item.pubDate).toLocaleDateString("ja-JP")}
-                </time>
-              )}
+              <FormattedDate date={item.pubDate} />
             </li>
           ))}
         </ul>
