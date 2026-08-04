@@ -25,7 +25,7 @@ const currentPath = normalizePath(Astro.url.pathname);
     >
       <span class="menu-icon" aria-hidden="true"></span>
     </button>
-    <ul id="nav-links" class="nav-links">
+    <ul id="nav-links" class="nav-links" role="list">
       {
         navItems.map((item) => (
           <li>
