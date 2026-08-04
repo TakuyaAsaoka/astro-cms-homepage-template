@@ -433,6 +433,11 @@ draft: false
 本文をここに記述する。
 ```
 
+`pubDate` は暦日（時刻に意味が無い、見る場所によって動いてはならない日付）です。
+表示するときは `<FormattedDate date={...} calendarDate />` を使ってください。
+`calendarDate` を付けないと `SITE_TIMEZONE` で変換され、書いた日付とずれます。
+RSS由来の日付（note の記事）は真の公開時刻なので `calendarDate` を付けません。
+
 ### CMS設定
 
 Sveltia CMS の設定は `public/admin/config.yml` で管理します。
