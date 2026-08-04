@@ -4,6 +4,8 @@ import {
   BASE_PATH,
   DEFAULT_OG_IMAGE,
   COPYRIGHT_HOLDER,
+  SITE_LANG,
+  SITE_LOCALE,
 } from "./consts";
 
 describe("ensureTrailingSlash", () => {
@@ -27,6 +29,16 @@ describe("DEFAULT_OG_IMAGE", () => {
 
   it("末尾がimages/og.pngで終わる", () => {
     expect(DEFAULT_OG_IMAGE.endsWith("images/og.png")).toBe(true);
+  });
+});
+
+describe("SITE_LOCALE", () => {
+  it("BCP47の言語-地域形式（例: ja-JP）である", () => {
+    expect(SITE_LOCALE).toMatch(/^[a-z]{2,3}-[A-Z]{2}$/);
+  });
+
+  it("SITE_LANGと同じ言語で始まる", () => {
+    expect(SITE_LOCALE.startsWith(SITE_LANG)).toBe(true);
   });
 });
 
