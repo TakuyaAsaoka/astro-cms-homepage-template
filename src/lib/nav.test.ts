@@ -36,3 +36,20 @@ describe("isNavActive", () => {
     expect(isNavActive("/your-repo/works", `${BASE}works/`, BASE)).toBe(true);
   });
 });
+
+// 独自ドメイン・ユーザーサイト（base "/"）のデプロイ形態。
+// normalizePath("/") は空文字になり Home 比較が "" === "" になる別経路のため、
+// プロジェクトサイト（/your-repo/）とは別に固定する
+describe("isNavActive（base が / のデプロイ形態）", () => {
+  it("HomeはHomeでのみアクティブになる", () => {
+    expect(isNavActive("/", "/", "/")).toBe(true);
+  });
+
+  it("Homeは他セクションではアクティブにならない", () => {
+    expect(isNavActive("/blog/", "/", "/")).toBe(false);
+  });
+
+  it("子ルートでも親のナビ項目がアクティブになる", () => {
+    expect(isNavActive("/works/sample-work/", "/works/", "/")).toBe(true);
+  });
+});
