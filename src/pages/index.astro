@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 import { publishedWorks } from "../lib/works";
 import { fetchFeedItems } from "../lib/rss";
 import FormattedDate from "../components/FormattedDate.astro";
@@ -9,8 +9,12 @@ import { getSiteSettings } from "../site-settings";
 
 const site = await getSiteSettings();
 
-// スキルセクションに表示する技術タグ
-const skills = ["Skill 1", "Skill 2", "Skill 3", "Skill 4"];
+// CMS管理のHome文言を取得する。欠落時はビルドを失敗させて設定漏れを早期に検知する
+const homeEntry = await getEntry("home", "home");
+if (!homeEntry) {
+  throw new Error("Home文言（src/content/pages/home.yaml）が見つかりません");
+}
+const home = homeEntry.data;
 
 // Homeに載せるピックアップ件数。増減はこの数字だけを変える
 const pickupWorks = publishedWorks(await getCollection("works")).slice(0, 3);
@@ -23,10 +27,10 @@ const latestPosts = (await fetchFeedItems(site.noteRssUrl)).slice(0, 3);
   <div class="home-hero" slot="hero">
     <div class="hero-inner">
       <div class="hero-content">
-        <p class="hero-role">YOUR ROLE</p>
+        <p class="hero-role">{home.hero.role}</p>
         <h1 class="hero-name">{site.author}</h1>
         <span class="hero-rule" aria-hidden="true"></span>
-        <p class="hero-copy">ここにキャッチコピーを入れます。</p>
+        <p class="hero-copy">{home.hero.tagline}</p>
       </div>
     </div>
   </div>
@@ -99,16 +103,28 @@ const latestPosts = (await fetchFeedItems(site.noteRssUrl)).slice(0, 3);
     )
   }
 
-  <section class="home-section">
-    <h2 class="section-heading" data-reveal>
-      <span class="section-num" aria-hidden="true"></span>
-      <span class="section-title">技術</span>
-      <span class="section-label" aria-hidden="true">SKILLS</span>
-    </h2>
-    <ul class="skill-list" role="list" data-reveal="delayed">
-      {skills.map((skill) => <li>{skill}</li>)}
-    </ul>
-  </section>
+  {
+    /* スキルが0件なら、見出しごと技術セクションを描画しない。
+       中身が空なら容器ごと隠す挙動を他セクションと統一する。 */
+  }
+  {
+    home.skills.length > 0 && (
+      <section class="home-section">
+        <h2 class="section-heading" data-reveal>
+          <span class="section-num" aria-hidden="true" />
+          <span class="section-title">技術</span>
+          <span class="section-label" aria-hidden="true">
+            SKILLS
+          </span>
+        </h2>
+        <ul class="skill-list" role="list" data-reveal="delayed">
+          {home.skills.map((skill) => (
+            <li>{skill}</li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
 
   {
     /* GITHUB・EMAIL の両方が空文字なら、見出しごと連絡先セクションを描画しない。

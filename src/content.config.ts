@@ -45,4 +45,38 @@ const settings = defineCollection({
   }),
 });
 
-export const collections = { works, settings };
+// Homeページの文言（CMS管理）。ヒーローの表示名はサイト設定の author を使うためここには持たない
+const home = defineCollection({
+  loader: glob({ pattern: "home.yaml", base: "./src/content/pages" }),
+  schema: z.object({
+    hero: z.object({
+      // ヒーローの必須文言。空のまま描画しない（settings と同じ方針で早期検知）
+      role: z.string().min(1),
+      tagline: z.string().min(1),
+    }),
+    // 空配列で「技術セクションを表示しない」を表す。
+    // CMS が空リストのキーを省略して保存してもビルドが壊れないよう既定する
+    skills: z.array(z.string()).default([]),
+  }),
+});
+
+// Aboutページの文言（CMS管理）。セクションは追加・削除・並び替え可能
+const about = defineCollection({
+  loader: glob({ pattern: "about.yaml", base: "./src/content/pages" }),
+  schema: z.object({
+    // 表示必須の文言は空文字を許さない（settings と同じ方針で早期検知）
+    lead: z.string().min(1),
+    sections: z
+      .array(
+        z.object({
+          title: z.string().min(1),
+          label: z.string().min(1),
+          body: z.string().min(1),
+        }),
+      )
+      // 空配列＝セクション無し（lead のみのページ）。既定の理由は skills と同じ
+      .default([]),
+  }),
+});
+
+export const collections = { works, settings, home, about };
