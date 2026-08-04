@@ -1,20 +1,21 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
-import { NOTE_RSS_URL } from "../consts";
 import { fetchFeedItems } from "../lib/rss";
+import { getSiteSettings } from "../site-settings";
 
-const feedItems = await fetchFeedItems(NOTE_RSS_URL);
+const site = await getSiteSettings();
+const feedItems = await fetchFeedItems(site.noteRssUrl);
 ---
 
 <BaseLayout title="Blog" description="Blog posts from note">
   <section>
     <h1>Blog</h1>
     {
-      NOTE_RSS_URL === "" && (
+      site.noteRssUrl === "" && (
         <p>
-          Set <code>NOTE_RSS_URL</code> in <code>src/consts.ts</code> to display
-          blog posts.
+          Set <code>noteRssUrl</code> in the CMS Site Settings (or{" "}
+          <code>src/content/settings/site.yaml</code>) to display blog posts.
         </p>
       )
     }
@@ -31,7 +32,7 @@ const feedItems = await fetchFeedItems(NOTE_RSS_URL);
           ))}
         </ul>
       ) : (
-        NOTE_RSS_URL !== "" && <p>No posts found.</p>
+        site.noteRssUrl !== "" && <p>No posts found.</p>
       )
     }
   </section>

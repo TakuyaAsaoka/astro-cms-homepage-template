@@ -1,0 +1,10 @@
+title: My Homepage
+description: A personal homepage template built with Astro
+author: Your Name
+copyrightHolder: Your Name
+email: you@example.com
+social:
+  github: https://github.com/your-username
+  twitter: ""
+  youtube: ""
+noteRssUrl: ""

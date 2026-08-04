@@ -1,14 +1,15 @@
 ---
-import { SOCIAL_LINKS, COPYRIGHT_HOLDER } from "../consts";
+import { getSiteSettings } from "../site-settings";
 
-const activeLinks = Object.entries(SOCIAL_LINKS).filter(([, url]) => url);
+const site = await getSiteSettings();
+const activeLinks = Object.entries(site.social).filter(([, url]) => url);
 ---
 
 <footer class="footer">
   <div class="footer-inner">
     <p class="copyright">
       &copy; {new Date().getFullYear()}
-      {COPYRIGHT_HOLDER}
+      {site.copyrightHolder}
     </p>
     {
       activeLinks.length > 0 && (

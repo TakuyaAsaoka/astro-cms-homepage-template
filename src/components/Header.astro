@@ -1,6 +1,9 @@
 ---
-import { SITE_TITLE, BASE_PATH } from "../consts";
+import { BASE_PATH } from "../consts";
 import { isNavActive } from "../lib/nav";
+import { getSiteSettings } from "../site-settings";
+
+const site = await getSiteSettings();
 
 const navItems = [
   { label: "Home", href: BASE_PATH },
@@ -11,7 +14,7 @@ const navItems = [
 
 <header class="header">
   <nav class="nav">
-    <a href={BASE_PATH} class="nav-title">{SITE_TITLE}</a>
+    <a href={BASE_PATH} class="nav-title">{site.title}</a>
     <button
       class="menu-toggle"
       aria-expanded="false"

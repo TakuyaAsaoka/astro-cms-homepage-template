@@ -12,10 +12,11 @@ GitHub Pages へのデプロイに対応しています。
 | ページ | Blog（note RSS連携） | noteの記事を自動取得して一覧表示。URL未設定時は案内を表示し、取得失敗してもビルドは落ちない |
 | ページ | Works 一覧・詳細 | Markdownを1枚書くだけで実績ページが増える（タグ・公開日順・下書き対応） |
 | ページ | 404ページ | noindex付きのエラーページを標準装備 |
-| CMS・コンテンツ | Sveltia CMS 管理画面 | ブラウザ（`/admin`）だけで Works コンテンツの作成・更新ができる。GitHubにコミットとして保存 |
+| CMS・コンテンツ | Sveltia CMS 管理画面 | ブラウザ（`/admin`）だけで Works コンテンツの作成・更新とサイト設定の編集ができる。GitHubにコミットとして保存 |
 | CMS・コンテンツ | Content Collections + Zodスキーマ | 不正なフロントマターをビルド時に検出。型安全にコンテンツを扱える |
 | CMS・コンテンツ | 下書き（draft）機能 | 公開前のコンテンツを本番から自動除外 |
-| カスタマイズ | `consts.ts` 一元管理 | サイト名・言語・タイムゾーン・SNSリンク・著者名・著作権表記名を1ファイルの編集だけで差し替えられる |
+| カスタマイズ | サイト設定のCMS管理 | サイト名・説明・著者名・著作権表記名・SNSリンク・メールアドレス・note RSS URL を CMS 管理画面（またはYAML 1ファイル）から編集できる。不正なURL・メールアドレスは入力時とビルド時の二段で検出 |
+| カスタマイズ | `consts.ts`（技術定数） | 言語・ロケール・タイムゾーンなどビルド設定に紐づく定数を1ファイルで管理 |
 | カスタマイズ | 未設定項目の自動非表示 | 空文字にした項目は表示されない。ホームの連絡先（GitHub・メールアドレス）とフッターのSNS一覧は、中身が全て空になるとセクションごと非表示になる。ホームの制作セクション（公開されている制作が0件）とBlogセクション（取得できる記事が0件）も非表示になり、セクション番号（壱・弐・参…）はCSSカウンタで自動的に振り直される |
 | カスタマイズ | デザイントークン | 色・フォント・余白をCSS変数で一元管理。トークンを差し替えるだけでブランド変更できる |
 | デザイン | ダークモード | OS設定に自動追従。全カラートークンをダーク用に再設計済み（ネイティブUIも追従） |
@@ -57,27 +58,32 @@ cd your-repo
 npm install
 ```
 
-3. `src/consts.ts` を編集してサイト情報を設定
+3. サイト情報を設定
 
-```typescript
-export const SITE_TITLE = "あなたのサイト名";
-export const SITE_DESCRIPTION = "サイトの説明";
-export const SITE_LANG = "ja"; // <html lang> と og:locale、日付の書式に反映
-export const SITE_TIMEZONE = "Asia/Tokyo"; // note RSS の日付表示の基準（Works の公開日は暦日なので影響しない）
+サイト名・説明・著者名などの表示系の設定は `src/content/settings/site.yaml` にあります。CMS 導入後は管理画面の「Site Settings」から編集できます（導入前はファイルを直接編集）。
 
-export const SOCIAL_LINKS = {
-  github: "https://github.com/your-username",
-  twitter: "",
-  youtube: "",
-};
-export const EMAIL = "you@example.com";
-export const SITE_AUTHOR = "Your Name"; // 著者表示名（ヒーロー等）
-export const COPYRIGHT_HOLDER = "Your Name"; // 著作権表記名（フッターの © 表記）
-
-export const NOTE_RSS_URL = ""; // note の RSS URL（例: "https://note.com/your-name/rss"）
+```yaml
+title: あなたのサイト名
+description: サイトの説明
+author: Your Name # 著者表示名（ヒーロー等）
+copyrightHolder: Your Name # 著作権表記名（フッターの © 表記）
+email: you@example.com
+social:
+  github: https://github.com/your-username
+  twitter: ""
+  youtube: ""
+noteRssUrl: "" # note の RSS URL（例: "https://note.com/your-name/rss"）
 ```
 
-> `SOCIAL_LINKS` の各項目と `EMAIL` は、空文字にすると表示されません。ホームの連絡先セクションは `SOCIAL_LINKS.github` と `EMAIL` の両方が、フッターのSNS一覧は `SOCIAL_LINKS` の全項目が空文字のとき、セクションごと非表示になります。`NOTE_RSS_URL` が空文字の場合、Blogページは設定を促す案内を表示し、ホームの Blog セクションは非表示になります（セクション番号は自動的に振り直されます）。
+> `social` の各項目と `email` は、空文字にすると表示されません。ホームの連絡先セクションは `social.github` と `email` の両方が、フッターのSNS一覧は `social` の全項目が空文字のとき、セクションごと非表示になります。`noteRssUrl` が空文字の場合、Blogページは設定を促す案内を表示し、ホームの Blog セクションは非表示になります（セクション番号は自動的に振り直されます）。
+
+言語・タイムゾーンなどの技術的な定数は `src/consts.ts` で設定します。
+
+```typescript
+export const SITE_LANG = "ja"; // <html lang> と日付の書式に反映
+export const SITE_LOCALE = "ja-JP"; // og:locale に反映（言語-地域の2要素）
+export const SITE_TIMEZONE = "Asia/Tokyo"; // note RSS の日付表示の基準（Works の公開日は暦日なので影響しない）
+```
 
 4. `astro.config.mjs` の `site` と `base` をデプロイ形態に合わせて設定
 
@@ -131,16 +137,17 @@ npm run dev
 │   └── favicon.svg
 ├── src/
 │   ├── components/         # 再利用可能なコンポーネント
-│   ├── content/            # コンテンツコレクション（Markdown）
+│   ├── content/            # コンテンツコレクション（Works の Markdown・サイト設定 YAML）
 │   ├── layouts/            # ページレイアウト
 │   ├── lib/                # 公開ルール等の共通ロジック（と そのテスト）
 │   ├── pages/              # ページ（ファイルベースルーティング）
 │   ├── scripts/            # クライアントスクリプト（スクロール登場処理とテスト）
 │   ├── styles/             # グローバルスタイル
 │   ├── test/               # テスト用ヘルパー（IntersectionObserverモック）
-│   ├── consts.ts           # サイト定数
-│   ├── consts.test.ts      # サイト定数のテスト
-│   └── content.config.ts   # コンテンツスキーマ定義
+│   ├── consts.ts           # 技術定数（言語・タイムゾーン等）
+│   ├── consts.test.ts      # 技術定数のテスト
+│   ├── content.config.ts   # コンテンツスキーマ定義
+│   └── site-settings.ts    # サイト設定（CMS管理）の取得
 ├── .gitignore
 ├── .prettierignore         # Prettier除外設定
 ├── .prettierrc.json        # Prettier設定

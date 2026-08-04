@@ -3,7 +3,6 @@ import {
   ensureTrailingSlash,
   BASE_PATH,
   DEFAULT_OG_IMAGE,
-  COPYRIGHT_HOLDER,
   SITE_LANG,
   SITE_LOCALE,
 } from "./consts";
@@ -39,11 +38,5 @@ describe("SITE_LOCALE", () => {
 
   it("言語部分がSITE_LANGと一致する", () => {
     expect(SITE_LOCALE.split("-")[0]).toBe(SITE_LANG);
-  });
-});
-
-describe("COPYRIGHT_HOLDER", () => {
-  it("空でない文字列が定義されている", () => {
-    expect(COPYRIGHT_HOLDER.length).toBeGreaterThan(0);
   });
 });

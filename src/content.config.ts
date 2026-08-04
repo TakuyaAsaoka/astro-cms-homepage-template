@@ -18,4 +18,31 @@ const works = defineCollection({
   }),
 });
 
-export const collections = { works };
+// SNSリンク等は空文字で「使わない＝非表示」を表すため、URL形式か空文字のみ許可する。
+// CMS が空欄フィールドのキーを省略して保存してもビルドが壊れないよう空文字に既定する
+const emptyableUrl = z.union([z.url(), z.literal("")]).default("");
+
+// サイト全体の設定（CMS管理）。ビルド設定に紐づく技術的な定数
+// （言語・タイムゾーン・base 等）は src/consts.ts に残す
+const settings = defineCollection({
+  loader: glob({ pattern: "site.yaml", base: "./src/content/settings" }),
+  schema: z.object({
+    // 表示必須の項目は空文字を許さない（空のままだとヘッダー・©表記が空欄で描画される）
+    title: z.string().min(1),
+    description: z.string().min(1),
+    author: z.string().min(1),
+    copyrightHolder: z.string().min(1),
+    // 空文字で「連絡先にメールを表示しない」を表す（既定の理由は emptyableUrl と同じ）
+    email: z.union([z.email(), z.literal("")]).default(""),
+    social: z
+      .object({
+        github: emptyableUrl,
+        twitter: emptyableUrl,
+        youtube: emptyableUrl,
+      })
+      .default({ github: "", twitter: "", youtube: "" }),
+    noteRssUrl: emptyableUrl,
+  }),
+});
+
+export const collections = { works, settings };
