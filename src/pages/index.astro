@@ -2,12 +2,14 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import { publishedWorks } from "../lib/works";
+import { fetchFeedItems } from "../lib/rss";
 import {
   BASE_PATH,
   SITE_DESCRIPTION,
   SOCIAL_LINKS,
   EMAIL,
   SITE_AUTHOR,
+  NOTE_RSS_URL,
 } from "../consts";
 
 // スキルセクションに表示する技術タグ
@@ -15,6 +17,9 @@ const skills = ["Skill 1", "Skill 2", "Skill 3", "Skill 4"];
 
 // Homeに載せるピックアップ件数。増減はこの数字だけを変える
 const pickupWorks = publishedWorks(await getCollection("works")).slice(0, 3);
+
+// Homeに載せるブログ記事件数。RSS未設定・取得失敗時は空配列（= セクション非描画）
+const latestPosts = (await fetchFeedItems(NOTE_RSS_URL)).slice(0, 3);
 ---
 
 <BaseLayout title="Home" description={SITE_DESCRIPTION}>
@@ -57,6 +62,44 @@ const pickupWorks = publishedWorks(await getCollection("works")).slice(0, 3);
           </ul>
           <p class="section-more">
             <a href={`${BASE_PATH}works/`}>制作一覧へ</a>
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    /* 記事が0件（RSS未設定・取得失敗含む）なら、見出しごと Blog セクションを描画しない。
+       中身が空なら容器ごと隠す挙動を制作・連絡先セクションと統一する。
+       セクション番号はCSSカウンタで自動採番されるため、ここが消えても欠番は出ない。 */
+  }
+  {
+    latestPosts.length > 0 && (
+      <section class="home-section">
+        <h2 class="section-heading" data-reveal>
+          <span class="section-num" aria-hidden="true" />
+          <span class="section-title">Blog</span>
+          <span class="section-label" aria-hidden="true">
+            BLOG
+          </span>
+        </h2>
+        <div data-reveal="delayed">
+          <ul class="blog-list" role="list">
+            {latestPosts.map((item) => (
+              <li>
+                <a href={item.link} target="_blank" rel="noopener noreferrer">
+                  {item.title}
+                </a>
+                {item.pubDate && (
+                  <time>
+                    {new Date(item.pubDate).toLocaleDateString("ja-JP")}
+                  </time>
+                )}
+              </li>
+            ))}
+          </ul>
+          <p class="section-more">
+            <a href={`${BASE_PATH}blog/`}>ブログ一覧へ</a>
           </p>
         </div>
       </section>
