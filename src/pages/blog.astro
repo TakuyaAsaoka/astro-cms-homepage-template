@@ -19,7 +19,7 @@ const feedItems = await fetchFeedItems(NOTE_RSS_URL);
     }
     {
       feedItems.length > 0 ? (
-        <ul class="blog-list">
+        <ul class="blog-list" role="list">
           {feedItems.map((item) => (
             <li>
               <a href={item.link} target="_blank" rel="noopener noreferrer">
