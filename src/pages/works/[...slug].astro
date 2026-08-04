@@ -23,7 +23,7 @@ const { Content } = await render(work);
          英字ラベルを横に組むための規則なので、ここでは付けない。 */
     }
     <h1 class="page-heading">{work.data.title}</h1>
-    <FormattedDate date={work.data.pubDate} calendarDate />
+    <FormattedDate date={work.data.pubDate} />
     <TagList tags={work.data.tags} />
     {
       work.data.url && (

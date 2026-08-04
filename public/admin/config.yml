@@ -21,9 +21,8 @@ collections:
       - { label: "Tags", name: "tags", widget: "list", default: [] }
       - { label: "Image", name: "image", widget: "image", required: false }
       - { label: "URL", name: "url", widget: "string", required: false }
-      # 公開日は暦日（時刻に意味が無い）。time_format: false で日付のみを保存する。
-      # 既定の datetime widget はタイムゾーン無しの日時（2026-01-01T20:00:00）を書き、
-      # それを YAML が UTC と解釈するため、入力した日付と表示が食い違う。
+      # 公開日は暦日で、スキーマも日付だけを保持する（content.config.ts）。
+      # 既定の datetime widget は時刻まで書き込むため、time_format: false で揃える。
       - {
           label: "Publish Date",
           name: "pubDate",

@@ -50,21 +50,20 @@ describe("formatDate", () => {
   });
 });
 
-// Works の pubDate は暦日で、FormattedDate が UTC で読む（calendarDate）。
-// YAML は日付リテラル（2026-01-01）もタイムゾーン無しの日時（2026-01-01T20:00:00）も
-// UTC の Date に変換するため、UTC で読めばフロントマターに書いた日付がそのまま出る。
-describe("暦日をUTCで読む", () => {
-  it("日付のみで書かれた pubDate は書いたとおりの日付になる", () => {
-    expect(formatDate(new Date("2026-01-01T00:00:00Z"), "ja", "UTC")).toEqual({
-      datetime: "2026-01-01",
-      text: "2026/1/1",
-    });
-  });
+// Works の pubDate は暦日の "YYYY-MM-DD" で渡ってくる（src/content.config.ts）。
+// 暦日は瞬間ではないので、タイムゾーンをどう指定しても日付が動いてはならない。
+describe("暦日（YYYY-MM-DD）の整形", () => {
+  it.each(["Asia/Tokyo", "UTC", "America/New_York", "Pacific/Kiritimati"])(
+    "タイムゾーンが %s でも書いた日付から動かない",
+    (timeZone) => {
+      expect(formatDate("2026-01-01", "ja", timeZone)).toEqual({
+        datetime: "2026-01-01",
+        text: "2026/1/1",
+      });
+    },
+  );
 
-  it("時刻付きで書かれた既存記事でも日付部分が保たれる", () => {
-    expect(formatDate(new Date("2026-01-01T20:00:00Z"), "ja", "UTC")).toEqual({
-      datetime: "2026-01-01",
-      text: "2026/1/1",
-    });
+  it("ロケールに応じた書式で表示する", () => {
+    expect(formatDate("2026-01-01", "en", "Asia/Tokyo")?.text).toBe("1/1/2026");
   });
 });

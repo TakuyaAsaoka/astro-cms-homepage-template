@@ -411,7 +411,7 @@ const works = defineCollection({
     tags: z.array(z.string()).default([]),
     image: z.string().optional(),
     url: z.string().url().optional(),
-    pubDate: z.coerce.date(),
+    pubDate: z.coerce.date().transform((d) => d.toISOString().slice(0, 10)),
     draft: z.boolean().default(false),
   }),
 });
@@ -433,10 +433,9 @@ draft: false
 本文をここに記述する。
 ```
 
-`pubDate` は暦日（時刻に意味が無い、見る場所によって動いてはならない日付）です。
-表示するときは `<FormattedDate date={...} calendarDate />` を使ってください。
-`calendarDate` を付けないと `SITE_TIMEZONE` で変換され、書いた日付とずれます。
-RSS由来の日付（note の記事）は真の公開時刻なので `calendarDate` を付けません。
+`pubDate` は暦日（どこで見ても動かない日付）であって瞬間ではないため、スキーマは
+`Date` ではなく `"YYYY-MM-DD"` の文字列で保持します。表示側は型を渡すだけでよく、
+タイムゾーンを意識する必要はありません。
 
 ### CMS設定
 

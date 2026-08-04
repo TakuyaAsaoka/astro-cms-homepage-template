@@ -25,10 +25,21 @@ export function formatDate(
   // 整形すると "Invalid Date" が描画されるため、ここで落として呼び出し側に委ねる。
   if (Number.isNaN(date.valueOf())) return null;
 
+  // "2026-01-01"（暦日）は瞬間ではないのでタイムゾーン変換をしない。new Date が
+  // これを UTC の深夜0時に置くため、UTC で読めば書いた日付がそのまま出る。
+  // SITE_TIMEZONE で読むと、UTCより西のゾーンでは前日にずれる。
+  const effectiveTimeZone = isCalendarDate(value) ? "UTC" : timeZone;
+
   return {
-    datetime: toISODate(date, timeZone),
-    text: date.toLocaleDateString(locale, { timeZone }),
+    datetime: toISODate(date, effectiveTimeZone),
+    text: date.toLocaleDateString(locale, { timeZone: effectiveTimeZone }),
   };
+}
+
+// 暦日（YYYY-MM-DD）かどうか。Works の pubDate はこの形式で保持される
+// （src/content.config.ts 参照）。RSS の pubDate は RFC822 なので該当しない。
+function isCalendarDate(value: Date | string): boolean {
+  return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
 }
 
 // datetime 属性用の YYYY-MM-DD を組み立てる。toISOString() は UTC 基準のため

@@ -10,7 +10,10 @@ const works = defineCollection({
     tags: z.array(z.string()).default([]),
     image: z.string().optional(),
     url: z.url().optional(),
-    pubDate: z.coerce.date(),
+    // 公開日は暦日（どこで見ても動かない日付）であって瞬間ではないため、
+    // Date ではなく "YYYY-MM-DD" で保持する。YAML はフロントマターの日付を
+    // 問答無用で UTC の Date に変換するので、UTC の日付部分を取り出して戻す。
+    pubDate: z.coerce.date().transform((d) => d.toISOString().slice(0, 10)),
     draft: z.boolean().default(false),
   }),
 });
