@@ -4,7 +4,7 @@ import { publishedWorks } from "./works";
 // テスト用のエントリを組み立てる。publishedWorks が参照するフィールドのみを持つ。
 const entry = (id: string, pubDate: string, draft = false) => ({
   id,
-  data: { pubDate: new Date(pubDate), draft },
+  data: { pubDate, draft },
 });
 
 describe("publishedWorks", () => {

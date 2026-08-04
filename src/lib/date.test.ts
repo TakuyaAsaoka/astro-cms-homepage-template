@@ -49,3 +49,21 @@ describe("formatDate", () => {
     expect(formatDate("not a date", "ja", "Asia/Tokyo")).toBeNull();
   });
 });
+
+// Works の pubDate は暦日の "YYYY-MM-DD" で渡ってくる（src/content.config.ts）。
+// 暦日は瞬間ではないので、タイムゾーンをどう指定しても日付が動いてはならない。
+describe("暦日（YYYY-MM-DD）の整形", () => {
+  it.each(["Asia/Tokyo", "UTC", "America/New_York", "Pacific/Kiritimati"])(
+    "タイムゾーンが %s でも書いた日付から動かない",
+    (timeZone) => {
+      expect(formatDate("2026-01-01", "ja", timeZone)).toEqual({
+        datetime: "2026-01-01",
+        text: "2026/1/1",
+      });
+    },
+  );
+
+  it("ロケールに応じた書式で表示する", () => {
+    expect(formatDate("2026-01-01", "en", "Asia/Tokyo")?.text).toBe("1/1/2026");
+  });
+});

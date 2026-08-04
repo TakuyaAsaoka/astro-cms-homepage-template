@@ -21,6 +21,13 @@ collections:
       - { label: "Tags", name: "tags", widget: "list", default: [] }
       - { label: "Image", name: "image", widget: "image", required: false }
       - { label: "URL", name: "url", widget: "string", required: false }
-      - { label: "Publish Date", name: "pubDate", widget: "datetime" }
+      # 公開日は暦日で、スキーマも日付だけを保持する（content.config.ts）。
+      # 既定の datetime widget は時刻まで書き込むため、time_format: false で揃える。
+      - {
+          label: "Publish Date",
+          name: "pubDate",
+          widget: "datetime",
+          time_format: false,
+        }
       - { label: "Draft", name: "draft", widget: "boolean", default: false }
       - { label: "Body", name: "body", widget: "markdown" }
