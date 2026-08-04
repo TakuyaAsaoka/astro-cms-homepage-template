@@ -7,7 +7,11 @@ import { publishedWorks } from "../../lib/works";
 const works = publishedWorks(await getCollection("works"));
 ---
 
-<BaseLayout title="Works" description="My works">
+<BaseLayout
+  title="Works"
+  description="My works"
+  breadcrumb={[{ label: "Works" }]}
+>
   <section>
     {
       /* Homeのセクション見出しと同じ語彙を使う（和数字は Home の連番のためのものなので付けない）。

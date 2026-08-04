@@ -4,6 +4,7 @@ import TagList from "../../components/TagList.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
 import { getCollection, render } from "astro:content";
 import { publishedWorks } from "../../lib/works";
+import { BASE_PATH } from "../../consts";
 
 export async function getStaticPaths() {
   return publishedWorks(await getCollection("works")).map((work) => ({
@@ -16,7 +17,19 @@ const { work } = Astro.props;
 const { Content } = await render(work);
 ---
 
-<BaseLayout title={work.data.title} description={work.data.description}>
+<BaseLayout
+  title={work.data.title}
+  description={work.data.description}
+  breadcrumb={[
+    { label: "Works", href: `${BASE_PATH}works/` },
+    { label: work.data.title },
+  ]}
+  article={{
+    datePublished: work.data.pubDate,
+    keywords: work.data.tags,
+    image: work.data.image,
+  }}
+>
   <article>
     {
       /* 一覧ページと見出しのサイズ・余白を揃える。.section-heading は和文タイトルと

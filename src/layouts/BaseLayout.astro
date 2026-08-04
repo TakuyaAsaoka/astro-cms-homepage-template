@@ -4,6 +4,10 @@ import { SITE_LANG } from "../consts";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import Breadcrumb, {
+  type BreadcrumbItem,
+} from "../components/Breadcrumb.astro";
+import type { ArticleData } from "../components/StructuredData.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -11,9 +15,13 @@ interface Props {
   description: string;
   image?: string;
   noindex?: boolean;
+  // Home を除くパンくず階層。省略時はパンくず非表示（Home・404 は渡さない）
+  breadcrumb?: BreadcrumbItem[];
+  // JSON-LD（Article）用の記事情報。制作詳細ページのみ渡す
+  article?: ArticleData;
 }
 
-const { title, description, image, noindex } = Astro.props;
+const { title, description, image, noindex, breadcrumb, article } = Astro.props;
 ---
 
 <!doctype html>
@@ -24,6 +32,8 @@ const { title, description, image, noindex } = Astro.props;
       description={description}
       image={image}
       noindex={noindex}
+      breadcrumb={breadcrumb}
+      article={article}
     />
     <ClientRouter />
     <script is:inline>
@@ -54,6 +64,7 @@ const { title, description, image, noindex } = Astro.props;
     <main>
       <slot name="hero" />
       <div class="main-inner">
+        {breadcrumb && <Breadcrumb items={breadcrumb} />}
         <slot />
       </div>
     </main>

@@ -8,7 +8,11 @@ const site = await getSiteSettings();
 const feedItems = await fetchFeedItems(site.noteRssUrl);
 ---
 
-<BaseLayout title="Blog" description="Blog posts from note">
+<BaseLayout
+  title="Blog"
+  description="Blog posts from note"
+  breadcrumb={[{ label: "Blog" }]}
+>
   <section>
     <h1>Blog</h1>
     {
