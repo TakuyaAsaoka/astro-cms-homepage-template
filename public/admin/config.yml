@@ -20,7 +20,19 @@ collections:
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Tags", name: "tags", widget: "list", default: [] }
       - { label: "Image", name: "image", widget: "image", required: false }
-      - { label: "URL", name: "url", widget: "string", required: false }
+      # スキーマ（content.config.ts の z.url()）はビルド時に検証するが、
+      # それではエラーの発見がデプロイまで遅れるため、CMS 側でも入力時に弾く
+      - {
+          label: "URL",
+          name: "url",
+          widget: "string",
+          required: false,
+          pattern:
+            [
+              '^(https?://\S+)?$',
+              "https:// または http:// で始まる正しいURLを入力してください（空欄可）",
+            ],
+        }
       # 公開日は暦日で、スキーマも日付だけを保持する（content.config.ts）。
       # 既定の datetime widget は時刻まで書き込むため、time_format: false で揃える。
       - {
