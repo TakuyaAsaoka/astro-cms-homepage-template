@@ -7,7 +7,7 @@ GitHub Pages へのデプロイに対応しています。
 
 | カテゴリ | 機能 | 提供価値 |
 |---------|------|---------|
-| ページ | ホーム | ヒーロー・制作（最新3件のピックアップ）・技術・連絡先を備えたトップページがすぐ使える |
+| ページ | ホーム | ヒーロー・制作（最新3件のピックアップ）・Blog（最新3件）・技術・連絡先を備えたトップページがすぐ使える |
 | ページ | About | 自己紹介・経歴・強み・価値観のセクション構成が用意済み |
 | ページ | Blog（note RSS連携） | noteの記事を自動取得して一覧表示。URL未設定時は案内を表示し、取得失敗してもビルドは落ちない |
 | ページ | Works 一覧・詳細 | Markdownを1枚書くだけで実績ページが増える（タグ・公開日順・下書き対応） |
@@ -74,7 +74,7 @@ export const COPYRIGHT_HOLDER = "Your Name"; // 著作権表記名（フッタ�
 export const NOTE_RSS_URL = ""; // note の RSS URL（例: "https://note.com/your-name/rss"）
 ```
 
-> `SOCIAL_LINKS` の各項目と `EMAIL` は、空文字にすると表示されません。ホームの連絡先セクションは `SOCIAL_LINKS.github` と `EMAIL` の両方が、フッターのSNS一覧は `SOCIAL_LINKS` の全項目が空文字のとき、セクションごと非表示になります。`NOTE_RSS_URL` が空文字の場合、Blogページは設定を促す案内を表示します。
+> `SOCIAL_LINKS` の各項目と `EMAIL` は、空文字にすると表示されません。ホームの連絡先セクションは `SOCIAL_LINKS.github` と `EMAIL` の両方が、フッターのSNS一覧は `SOCIAL_LINKS` の全項目が空文字のとき、セクションごと非表示になります。`NOTE_RSS_URL` が空文字の場合、Blogページは設定を促す案内を表示し、ホームの Blog セクションは非表示になります（セクション番号は自動的に振り直されます）。
 
 4. `astro.config.mjs` の `site` と `base` をデプロイ形態に合わせて設定
 
