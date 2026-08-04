@@ -1,23 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { NOTE_RSS_URL } from "../consts";
-import Parser from "rss-parser";
+import { fetchFeedItems } from "../lib/rss";
 
-let feedItems: { title: string; link: string; pubDate: string }[] = [];
-
-if (NOTE_RSS_URL) {
-  try {
-    const parser = new Parser();
-    const feed = await parser.parseURL(NOTE_RSS_URL);
-    feedItems = (feed.items ?? []).map((item) => ({
-      title: item.title ?? "",
-      link: item.link ?? "",
-      pubDate: item.pubDate ?? "",
-    }));
-  } catch (e) {
-    console.error("Failed to fetch RSS feed:", e);
-  }
-}
+const feedItems = await fetchFeedItems(NOTE_RSS_URL);
 ---
 
 <BaseLayout title="Blog" description="Blog posts from note">
@@ -53,22 +39,3 @@ if (NOTE_RSS_URL) {
     }
   </section>
 </BaseLayout>
-
-<style>
-  .blog-list {
-    list-style: none;
-  }
-  .blog-list li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--color-border);
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1rem;
-  }
-  .blog-list time {
-    font-size: 0.85rem;
-    white-space: nowrap;
-    color: var(--color-muted);
-  }
-</style>
