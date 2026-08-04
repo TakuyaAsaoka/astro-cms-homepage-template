@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import { publishedWorks } from "../lib/works";
 import { fetchFeedItems } from "../lib/rss";
+import FormattedDate from "../components/FormattedDate.astro";
 import {
   BASE_PATH,
   SITE_DESCRIPTION,
@@ -90,11 +91,7 @@ const latestPosts = (await fetchFeedItems(NOTE_RSS_URL)).slice(0, 3);
                 <a href={item.link} target="_blank" rel="noopener noreferrer">
                   {item.title}
                 </a>
-                {item.pubDate && (
-                  <time>
-                    {new Date(item.pubDate).toLocaleDateString("ja-JP")}
-                  </time>
-                )}
+                <FormattedDate date={item.pubDate} />
               </li>
             ))}
           </ul>
