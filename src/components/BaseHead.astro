@@ -31,6 +31,16 @@ const fullTitle = `${title} | ${site.title}`;
 <meta name="generator" content={Astro.generator} />
 <link rel="icon" type="image/svg+xml" href={`${BASE_PATH}favicon.svg`} />
 
+<!-- RSSフィード自動検出 -->
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={site.title}
+  href={Astro.site
+    ? new URL(`${BASE_PATH}rss.xml`, Astro.site).href
+    : `${BASE_PATH}rss.xml`}
+/>
+
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
