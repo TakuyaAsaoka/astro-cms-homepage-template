@@ -21,8 +21,9 @@ export const SITE_DESCRIPTION = "A personal homepage template built with Astro";
 export const SITE_LANG = "ja";
 
 // サイトのロケール（言語-地域）。og:locale の元になる。
-// BCP47 形式（例: "ja-JP", "en-GB"）で書く。og:locale が要求する
-// アンダースコア形式（ja_JP）への変換は BaseHead が行う。
+// BCP47 形式の言語-地域の2要素のみ（例: "ja-JP", "en-GB"）で書く。
+// スクリプト付き（zh-Hant-TW 等）は変換が対応していないため不可。
+// og:locale が要求するアンダースコア形式（ja_JP）への変換は BaseHead が行う。
 export const SITE_LOCALE = "ja-JP";
 
 // RSSフィードの日付を表示するときの基準タイムゾーン（IANAのタイムゾーン名）。

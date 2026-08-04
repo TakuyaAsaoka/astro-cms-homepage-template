@@ -37,8 +37,8 @@ describe("SITE_LOCALE", () => {
     expect(SITE_LOCALE).toMatch(/^[a-z]{2,3}-[A-Z]{2}$/);
   });
 
-  it("SITE_LANGと同じ言語で始まる", () => {
-    expect(SITE_LOCALE.startsWith(SITE_LANG)).toBe(true);
+  it("言語部分がSITE_LANGと一致する", () => {
+    expect(SITE_LOCALE.split("-")[0]).toBe(SITE_LANG);
   });
 });
 
