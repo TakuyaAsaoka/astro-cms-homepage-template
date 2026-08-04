@@ -12,11 +12,11 @@ interface Props {
 const { title, description, tags, slug } = Astro.props;
 ---
 
-<article class="project-card">
+<article class="work-card">
   <h2>
-    <a href={`${BASE_PATH}projects/${slug}/`}>{title}</a>
+    <a href={`${BASE_PATH}works/${slug}/`}>{title}</a>
   </h2>
-  <p class="project-description">{description}</p>
+  <p class="work-description">{description}</p>
   <TagList tags={tags} />
 </article>
 
@@ -24,7 +24,7 @@ const { title, description, tags, slug } = Astro.props;
   /* 一覧ページ専用のカード。グリッドに並べるためセル境界を示す囲み枠を持つ
      （Homeの抜粋は通読させる軸なので、罫線区切りの別意匠にしてある）。
      行内でカード高さが揃うよう縦フレックスにする。 */
-  .project-card {
+  .work-card {
     display: flex;
     flex-direction: column;
     padding: 1.25rem;
@@ -35,22 +35,22 @@ const { title, description, tags, slug } = Astro.props;
     overflow-wrap: anywhere;
   }
   /* h2 の既定サイズはカード内では大きすぎるため、カード見出しとして詰める */
-  .project-card h2 {
+  .work-card h2 {
     font-size: 1.15rem;
   }
   /* 文字色は見出しに揃える（リンク色が将来変わってもカード見出しの階調を保つ）。
      下線は打ち消さない: カード全体はリンクではないため、.main-inner a のアクセント
      下線がクリック先を特定する唯一の手がかりになる */
-  .project-card h2 a {
+  .work-card h2 a {
     color: inherit;
   }
-  .project-description {
+  .work-description {
     margin-top: 0.5rem;
     color: var(--color-ink-soft);
   }
   /* TagList は余白を持たないため、カード内の余白は消費側で与える。
      高さが揃った行でタグだけ宙に浮かないよう、下端に寄せる */
-  .project-card :global(.tags) {
+  .work-card :global(.tags) {
     margin-top: auto;
     padding-top: 0.75rem;
   }
