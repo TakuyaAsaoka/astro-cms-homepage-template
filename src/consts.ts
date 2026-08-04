@@ -20,13 +20,13 @@ export const SITE_DESCRIPTION = "A personal homepage template built with Astro";
 // lang は "en-GB"・og:locale は "en_GB" と形式が異なるため、定数の分離が必要。
 export const SITE_LANG = "ja";
 
-// 日付表示の基準タイムゾーン（IANAのタイムゾーン名）。Astro はビルド時に
-// 日付を確定するため、指定しないとビルドマシンのTZ（CIはUTC・ローカルはJST等）
-// で日付が1日ずれる。言語とは別軸なので SITE_LANG とは独立して指定する。
+// RSSフィードの日付を表示するときの基準タイムゾーン（IANAのタイムゾーン名）。
+// Astro はビルド時に日付を確定するため、指定しないとビルドマシンのTZ
+// （CIはUTC・ローカルはJST等）で日付が1日ずれる。言語とは別軸なので
+// SITE_LANG とは独立して指定する。
 //
-// 注意: Works のフロントマターで pubDate を日付のみ（2026-08-02）で書くと
-// UTCの深夜0時と解釈されるため、UTCより西のゾーンを指定すると表示が前日になる。
-// その場合は pubDate に時刻まで書く（2026-08-02T09:00:00+09:00 等）。
+// Works の pubDate には効かない。あちらは「いつ公開したか」という暦日であり、
+// 見る場所によって動いてはならないため、タイムゾーン変換をしない（date.ts 参照）。
 export const SITE_TIMEZONE = "Asia/Tokyo";
 
 // SNSリンク（使わないものは空文字にする）

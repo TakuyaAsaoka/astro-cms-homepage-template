@@ -1,15 +1,26 @@
 ---
 import { formatDate } from "../lib/date";
+import { SITE_LANG, SITE_TIMEZONE } from "../consts";
 
 interface Props {
   date: Date | string;
+  // 暦日（Works の pubDate のように「いつ公開したか」だけを表し、時刻に意味が
+  // 無い日付）は UTC で読む。YAML は日付リテラルをUTC深夜0時の Date に変換し、
+  // CMSが書くタイムゾーン無しの日時（2026-01-01T20:00:00）も UTC と解釈するため、
+  // UTCで読めばフロントマターに書いた日付がそのまま出る。SITE_TIMEZONE で変換すると
+  // 書いた日付と表示が食い違う（見る場所によって暦日が動いてはならない）。
+  calendarDate?: boolean;
 }
 
-const { date } = Astro.props;
+const { date, calendarDate = false } = Astro.props;
 
 // 整形できない日付（RSSの pubDate 欠落・不正値）は <time> ごと描画しない。
 // datetime 属性のない <time> や "Invalid Date" を出さないための扱い。
-const formatted = formatDate(date);
+const formatted = formatDate(
+  date,
+  SITE_LANG,
+  calendarDate ? "UTC" : SITE_TIMEZONE,
+);
 ---
 
 {formatted && <time datetime={formatted.datetime}>{formatted.text}</time>}

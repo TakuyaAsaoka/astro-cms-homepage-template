@@ -49,3 +49,22 @@ describe("formatDate", () => {
     expect(formatDate("not a date", "ja", "Asia/Tokyo")).toBeNull();
   });
 });
+
+// Works の pubDate は暦日で、FormattedDate が UTC で読む（calendarDate）。
+// YAML は日付リテラル（2026-01-01）もタイムゾーン無しの日時（2026-01-01T20:00:00）も
+// UTC の Date に変換するため、UTC で読めばフロントマターに書いた日付がそのまま出る。
+describe("暦日をUTCで読む", () => {
+  it("日付のみで書かれた pubDate は書いたとおりの日付になる", () => {
+    expect(formatDate(new Date("2026-01-01T00:00:00Z"), "ja", "UTC")).toEqual({
+      datetime: "2026-01-01",
+      text: "2026/1/1",
+    });
+  });
+
+  it("CMSが書くタイムゾーン無しの日時でも日付部分が保たれる", () => {
+    expect(formatDate(new Date("2026-01-01T20:00:00Z"), "ja", "UTC")).toEqual({
+      datetime: "2026-01-01",
+      text: "2026/1/1",
+    });
+  });
+});
