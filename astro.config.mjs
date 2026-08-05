@@ -6,6 +6,11 @@ export default defineConfig({
   // ビルド時に dist/sitemap-index.xml として出力される
   integrations: [sitemap()],
 
+  // Astro のキャッシュ（フォントのダウンロードキャッシュ等）を node_modules の外に置く。
+  // 既定の node_modules/.astro だと CI の npm ci で消えるため、
+  // actions/cache で復元してもビルド前に失われる（.github/workflows/deploy.yml 参照）。
+  cacheDir: "./.astro-cache",
+
   // Google Fonts をビルド時に取得してセルフホスト化する。
   // @font-face と CSS 変数（--font-serif / --font-sans）は BaseHead.astro の
   // <Font> コンポーネントが :root に注入する。
