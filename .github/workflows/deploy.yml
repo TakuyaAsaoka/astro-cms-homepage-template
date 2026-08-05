@@ -24,6 +24,15 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      # Google Fonts のダウンロードキャッシュ。API の一時障害でのビルド失敗を防ぐ。
+      # キャッシュ先は astro.config.mjs の cacheDir（node_modules 外に出してあるため
+      # withastro/action 内部の npm ci に消されない）
+      - name: Cache Astro fonts
+        uses: actions/cache@v4
+        with:
+          path: .astro-cache/fonts
+          key: astro-fonts-${{ hashFiles('astro.config.mjs') }}
+          restore-keys: astro-fonts-
       - name: Build with Astro
         uses: withastro/action@v6
         with:
