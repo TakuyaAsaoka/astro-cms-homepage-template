@@ -96,13 +96,15 @@ const sectionLinks = [
     color: var(--color-ink-soft);
     font-size: 0.9rem;
   }
-  .section-links a:hover .section-link-label {
+  .section-links a:hover .section-link-label,
+  .section-links a:focus-visible .section-link-label {
     text-decoration: underline;
     text-decoration-color: var(--accent);
     text-decoration-thickness: 1px;
     text-underline-offset: 6px;
   }
-  .section-links a:hover .section-link-arrow {
+  .section-links a:hover .section-link-arrow,
+  .section-links a:focus-visible .section-link-arrow {
     transform: translateX(3px);
   }
   .not-found .back {
