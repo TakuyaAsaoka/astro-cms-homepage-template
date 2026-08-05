@@ -6,7 +6,7 @@ import globals from "globals";
 
 export default [
   // ビルド成果物と生成物は対象外にする。
-  { ignores: ["dist/", ".astro/"] },
+  { ignores: ["dist/", ".astro/", ".astro-cache/"] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   ...astro.configs["flat/recommended"],
