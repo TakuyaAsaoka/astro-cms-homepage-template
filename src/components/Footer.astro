@@ -56,7 +56,8 @@ const activeLinks = Object.entries(site.social).filter(([, url]) => url);
     color: var(--color-muted);
     text-decoration: none;
   }
-  .social-links a:hover {
+  .social-links a:hover,
+  .social-links a:focus-visible {
     color: var(--accent);
   }
   .copyright {
